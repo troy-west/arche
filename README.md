@@ -1,4 +1,4 @@
-# Archi: Cassandra Clojure Cluster and Session Management with Alia
+# Arche: Cassandra Clojure Cluster and Session Management with Alia
 
 > [Arche](https://en.wikipedia.org/wiki/Arche): A Greek word with primary senses "beginning", "origin", or "source of action"<br/>
 > [Arche](https://en.wikipedia.org/wiki/Arche_(mythology)): The ancient Greek muse of origins
