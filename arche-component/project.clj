@@ -1,5 +1,8 @@
 (defproject com.troy-west/arche-component "0.1.0-SNAPSHOT"
   :description "Arche system configuration using the the Component library."
-  :dependencies [[com.troy-west/arche "0.1.0-SNAPSHOT"]
-                 [com.troy-west/arche-hugsql "0.1.0-SNAPSHOT"]
+
+  :plugins [[lein-modules "0.3.11"]]
+
+  :dependencies [[com.troy-west/arche "_"]
+                 [com.troy-west/arche-hugcql "_"]
                  [com.stuartsierra/component "0.3.2"]])
