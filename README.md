@@ -1,31 +1,41 @@
-# Arche: Cassandra Clojure Cluster and Session Management with Alia
+# Arche: Cassandra Clojure State Management with Alia
 
 > [Arche](https://en.wikipedia.org/wiki/Arche): A Greek word with primary senses "beginning", "origin", or "source of action"<br/>
 > [Arche](https://en.wikipedia.org/wiki/Arche_(mythology)): The ancient Greek muse of origins
+
+## Summary
+
+Arche allows:
+
+* Easy lifecycle and DI management of Cassandra state (cluster/session/statement/UDT) via [Integrant](https://github.com/weavejester/integrant) or [Component](https://github.com/stuartsierra/component)
+* Definition of prepared statements through an extension of HugSQL to support CQL
+* Execution of prepared statements via an extension of [Alia](https://github.com/mpenet/alia) 
+* Seamless support for existing [Alia](https://github.com/mpenet/alia) execution
+* As much configuration from EDN as possible
 
 ## Modules
 
 * [com.troy-west.arche/arche](https://github.com/troy-west/arche/tree/master/arche)
 
-  The base arche module. Provides an alia session wrapper that binds prepared statements to a session allowing them to be called using the standard alia execution functions. UDT's are also bound to the session.
+  Provides a proxy session and Alia extension that  binds prepared statements and UDTs to a session allowing them to be called using the standard alia execution functions.
 
 * [com.troy-west.arche/arche-hugsql](https://github.com/troy-west/arche/tree/master/arche-hugsql)
 
-  Uses hugsql to parse prepared statements from a String, File or map of statements.
+  Uses an extension of [HugSQL](https://github.com/layerware/hugsql) to parse CQL prepared statements from a String, File, or map of Keyword->String. 
 
 * [com.troy-west.arche/arche-integrant](https://github.com/troy-west/arche/tree/master/arche-integrant)
 
-  Provides an opinionated cassandra component (using [integrant](https://github.com/weavejester/integrant)) with lifecycle and dependency management of clusters and sessions.
+  Provides opinionated Cassandra state management via [Integrant](https://github.com/weavejester/integrant))
 
 * [com.troy-west.arche/arche-component](https://github.com/troy-west/arche/tree/master/arche-component)
 
-  Provides an opinionated cassandra component (using [Component](https://github.com/stuartsierra/component)) with lifecycle and dependency management of clusters and sessions.
+  Provides opinionated Cassandra state management via [Component](https://github.com/stuartsierra/component)
 
 ## Usage
 
 ### Initial Setup
 
-Define your schema (and automate with [CCM-CLJ](https://github.com/SMX-LTD/ccm-clj))
+Define your schema (optionally, automate test cluster management with [CCM-CLJ](https://github.com/SMX-LTD/ccm-clj))
 
 ```cql
 CREATE TYPE asset (
@@ -56,7 +66,7 @@ Example of creating a cluster:
                    19142)
 ```
 
-### Usage without components
+### Usage without Integrant or Component 
 
 Create a cluster instance using alia.
 
