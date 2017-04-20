@@ -1,0 +1,62 @@
+(ns com.troy-west.arche-component
+  (:require [com.stuartsierra.component :as component]
+            [com.troy-west.arche :as arche]
+            [com.troy-west.arche-hugsql :as arche-hugsql]
+            [qbits.alia :as alia]))
+
+(defrecord StatementsComponent [config]
+  component/Lifecycle
+
+  (start [this]
+    (println ";; Starting Cassandra StatementsComponent")
+    (arche-hugsql/prepared-statements config)))
+
+(defn create-statements
+  [config]
+  (->StatementsComponent config))
+
+(defrecord ClusterComponent [config cluster]
+  component/Lifecycle
+
+  (start [this]
+    (println ";; Starting Cassandra ClusterComponent")
+    (let [cluster (alia/cluster config)]
+      (assoc this :cluster cluster)))
+
+  (stop [this]
+    (println ";; Stopping Cassandra ClusterComponent")
+    (when cluster (alia/shutdown cluster))
+    (assoc this :cluster nil)))
+
+(defn create-cluster
+  [config]
+  (map->ClusterComponent {:config config}))
+
+(defrecord SessionComponent [keyspace cluster statements udts session]
+  component/Lifecycle
+
+  (start [this]
+    (println ";; Starting Cassandra SessionComponent")
+    (let [session (arche/init-session (update this :cluster :cluster))]
+      (assoc this :session session)))
+
+  (stop [this]
+    (println ";; Stopping Cassandra SessionComponent")
+    (when session (alia/shutdown session))
+    (assoc this :session nil)))
+
+(defn create-session
+  [{:keys [keyspace cluster statements udts]}]
+  (component/using
+   (map->SessionComponent {:keyspace keyspace})
+   {:cluster    cluster
+    :statements statements
+    :udts       udts}))
+
+(defn session
+  [cassandra session-key]
+  (-> cassandra session-key :session))
+
+(defn encode
+  [session udts-key value]
+  (arche/encode session udts-key value))
