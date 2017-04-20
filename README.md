@@ -8,7 +8,7 @@
 Arche allows:
 
 * Easy DI/Lifecycle management of Cassandra state (cluster/session/statement/UDT) via [Integrant](https://github.com/weavejester/integrant) or [Component](https://github.com/stuartsierra/component)
-* Definition of prepared statements through an extension of HugSQL to support CQL
+* Definition of prepared statements through an extension of [HugSQL](https://github.com/layerware/hugsql) to support CQL
 * Execution of prepared statements via an extension of [Alia](https://github.com/mpenet/alia) 
 * Seamless support for existing [Alia](https://github.com/mpenet/alia) execution
 * As much configuration from EDN as possible
@@ -17,15 +17,15 @@ Arche allows:
 
 * [com.troy-west.arche/arche](https://github.com/troy-west/arche/tree/master/arche)
 
-  Provides a proxy session and Alia extension that  binds prepared statements and UDTs to a session allowing them to be called using the standard alia execution functions.
+  Provides a proxy session, UDT support, and an Alia extension that binds prepared statements allowing easy execution via any Alia execute function
 
 * [com.troy-west.arche/arche-hugsql](https://github.com/troy-west/arche/tree/master/arche-hugsql)
 
-  Uses an extension of [HugSQL](https://github.com/layerware/hugsql) to parse CQL prepared statements from a String, File, or map of Keyword->String. 
+  Provides an extension of HugSQL to parse CQL prepared statements from a String, File, or map of Keyword->String
 
 * [com.troy-west.arche/arche-integrant](https://github.com/troy-west/arche/tree/master/arche-integrant)
 
-  Provides opinionated Cassandra state management via [Integrant](https://github.com/weavejester/integrant))
+  Provides opinionated Cassandra state management via [Integrant](https://github.com/weavejester/integrant)
 
 * [com.troy-west.arche/arche-component](https://github.com/troy-west/arche/tree/master/arche-component)
 
@@ -110,6 +110,10 @@ Use alia execute queries against the session.
 
 ``` clojure
 (alia/execute session ::insert-client {:values {:id "id-1" :name "Carol"}})
+
+(alia/execute-chan session ::insert-client {:values {:id "id-1" :name "Carol"}})
+
+(alia/execute-async session ::insert-client {:values {:id "id-1" :name "Carol"}})
 ```
 
 ### Parsing CQL prepared statements
