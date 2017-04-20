@@ -1,7 +1,7 @@
-(ns com.troy-west.arche-integrant
+(ns troy-west.arche-integrant
   (:require [integrant.core :as ig]
-            [com.troy-west.arche :as arche]
-            [com.troy-west.arche-hugsql :as arche-hugsql]
+            [troy-west.arche :as arche]
+            [troy-west.arche-hugcql :as arche-hugcql]
             [qbits.alia :as alia]))
 
 (defmethod ig/init-key :cassandra/cluster
@@ -14,7 +14,7 @@
 
 (defmethod ig/init-key :arche/statements
   [_ config]
-  (arche-hugsql/prepared-statements config))
+  (arche-hugcql/prepared-statements config))
 
 (defmethod ig/init-key :arche/udts
   [_ config]

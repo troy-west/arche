@@ -1,4 +1,4 @@
-(ns com.troy-west.arche
+(ns troy-west.arche
   (:require [qbits.alia :as alia]
             [qbits.alia.codec.default :as codec.default]
             [qbits.alia.udt :as alia.udt])

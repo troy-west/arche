@@ -1,4 +1,4 @@
-# arche-hugsql
+# arche-hugcql
 
 Arche HugSQL integration
 

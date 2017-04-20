@@ -19,7 +19,7 @@ Arche allows:
 
   Provides a Datastax session proxy, UDT support, and an Alia extension that binds prepared statements allowing easy execution via any Alia execute function
 
-* [com.troy-west.arche/arche-hugsql](https://github.com/troy-west/arche/tree/master/arche-hugsql)
+* [com.troy-west.arche/arche-hugcql](https://github.com/troy-west/arche/tree/master/arche-hugcql)
 
   An extension of HugSQL to parse CQL prepared statements from a String, File, or map of Keyword->String
 

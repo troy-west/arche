@@ -1,7 +1,7 @@
-(ns com.troy-west.arche-component
+(ns troy-west.arche-component
   (:require [com.stuartsierra.component :as component]
-            [com.troy-west.arche :as arche]
-            [com.troy-west.arche-hugsql :as arche-hugsql]
+            [troy-west.arche :as arche]
+            [troy-west.arche-hugcql :as arche-hugcql]
             [qbits.alia :as alia]))
 
 (defrecord StatementsComponent [config]
@@ -9,7 +9,7 @@
 
   (start [this]
     (println ";; Starting Cassandra StatementsComponent")
-    (arche-hugsql/prepared-statements config)))
+    (arche-hugcql/prepared-statements config)))
 
 (defn create-statements
   [config]
