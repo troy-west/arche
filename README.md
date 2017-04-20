@@ -150,7 +150,7 @@ Then cql file can be loaded like this:
 ;; => {:foo/bar "select foo_bar as \"foo-bar\" from emp as where id_num = :\"id-num\""}
 ```
 
-### [integrant](https://github.com/weavejester/integrant) arche component (recommended)
+### [Integrant](https://github.com/weavejester/integrant) DI/Lifecycle Management (recommended)
 
 Create prepared statements cql in `prepared/test.cql`
 
@@ -214,7 +214,7 @@ Execute some prepared statements using alia.
                                                     :notional "98"})}}}))
 ```
 
-### [Component](https://github.com/stuartsierra/component) arche component
+### [Component](https://github.com/stuartsierra/component) DI/Lifecycle Management
 
 Create prepared statements cql in `prepared/test.cql`
 
