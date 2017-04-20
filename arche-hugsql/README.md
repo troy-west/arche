@@ -1,14 +1,10 @@
 # arche-hugsql
 
-A Clojure library designed to ... well, that part is up to you.
-
-## Usage
-
-FIXME
+Arche HugSQL integration
 
 ## License
 
-Copyright © 2017 FIXME
+Copyright © 2017 [Troy-West, Pty Ltd.](http://www.troywest.com)
 
 Distributed under the Eclipse Public License either version 1.0 or (at
 your option) any later version.
