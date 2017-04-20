@@ -7,7 +7,7 @@
 
 Arche allows:
 
-* Easy lifecycle and DI management of Cassandra state (cluster/session/statement/UDT) via [Integrant](https://github.com/weavejester/integrant) or [Component](https://github.com/stuartsierra/component)
+* Easy DI/Lifecycle management of Cassandra state (cluster/session/statement/UDT) via [Integrant](https://github.com/weavejester/integrant) or [Component](https://github.com/stuartsierra/component)
 * Definition of prepared statements through an extension of HugSQL to support CQL
 * Execution of prepared statements via an extension of [Alia](https://github.com/mpenet/alia) 
 * Seamless support for existing [Alia](https://github.com/mpenet/alia) execution
