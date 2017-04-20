@@ -69,8 +69,6 @@ Create a cluster instance using alia.
 Define some statements and UDT's.
 
 ``` clojure
-
-;; note: the keys here define data reader tag names
 (def udts {::asset {:name "asset"}})
 
 (def statements {::insert-client "INSERT INTO client (id, name) VALUES (:id, :name)"
@@ -108,7 +106,7 @@ Use alia execute queries against the session.
 
 Arche-hugsql makes use of [HugSQL](https://www.hugsql.org/) to parse CQL prepared statements defined in CQL files, Strings or in a clojure map. It supports HugSQL [value parameters](https://www.hugsql.org/#param-value) and [identifier parameters](https://www.hugsql.org/#param-identifier). You can include the keywords in your CQL queries and the names will be properly quoted for you, automatically handling kebab cased keywords.
 
-The clq parsing is all done through the `prepared-statements` function. This function produces a map of prepared statement Strings with the identifiers and values quoted.
+The cql parsing is all done through the `prepared-statements` function. This function produces a map of prepared statement Strings with the identifiers and values quoted.
 
 #### maps example
 
@@ -226,7 +224,7 @@ SELECT id, :i:asset-basket FROM trade where id = :id
 
 Define the Component cassandra configuration, can either be defined in a text file or in code.
 
-Note: the data reader tags #arche/statements, #arche/cluster and #arche/session are made avalible by the `arche-component` library to make it possible to declaratively define the Component configuration as EDN data.
+Note: the data reader tags #arche/statements, #arche/cluster and #arche/session are made avalible by the `arche-component` library to make it possible to declaratively define the Component configuration as EDN data. Alternatively there are functions to achieve the same, `create-statements`, `create-cluster` and `create-session`. There will create arche Component Records.
 
 ``` clojure
 (require '[com.stuartsierra.component :as component])
