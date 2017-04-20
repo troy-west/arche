@@ -9,7 +9,7 @@ Arche allows:
 
 * Easy DI/Lifecycle management of Cassandra state (cluster/session/statement/UDT) via [Integrant](https://github.com/weavejester/integrant) or [Component](https://github.com/stuartsierra/component)
 * Definition of prepared statements through an extension of [HugSQL](https://github.com/layerware/hugsql) to support CQL
-* Execution of prepared statements via an extension of [Alia](https://github.com/mpenet/alia) 
+* Execution of prepared statements via an extension of [Alia](https://github.com/mpenet/alia)
 * Seamless support for existing [Alia](https://github.com/mpenet/alia) execution
 * As much configuration from EDN as possible
 
@@ -66,7 +66,7 @@ Example of creating a cluster:
                    19142)
 ```
 
-### Usage without Integrant or Component 
+### Usage without Integrant or Component
 
 Create a cluster instance using alia.
 
@@ -90,7 +90,7 @@ Define some statements and UDT's.
 Create an arche session with the cluster and the sandbox keyspace and pass the statements and UDT's as options.
 
 ``` clojure
-(require '[com.troy-west.arche :as arche])
+(require '[troy-west.arche :as arche])
 
 (def session (arche/connect cluster "sandbox" {:statements statements :udts udts}))
 ```
@@ -125,7 +125,7 @@ The cql parsing is all done through the `prepared-statements` function. This fun
 #### maps example
 
 ``` clojure
-(require '[com.troy-west.arche-hugsql :as arche-hugsql])
+(require '[troy-west.arche-hugsql :as arche-hugsql])
 
 (arche-hugsql/prepared-statements {:foo/bar "select :i:foo-bar from emp as where id_num = :id-num"})
 ;; => {:foo/bar "select foo_bar as \"foo-bar\" from emp as where id_num = :\"id-num\""}
@@ -178,7 +178,7 @@ Note: The `ig/ref` calls can be replaced by integrant `#ref` tag to allow the co
 
 ``` clojure
 (require '[integrant.core :as ig])
-(require '[com.troy-west.arche-integrant :as arche])
+(require '[troy-west.arche-integrant :as arche])
 
 (def cassandra-config
   {[:arche/statements :test/statements-1] ["prepared/test.cql"]
@@ -242,7 +242,7 @@ Note: the data reader tags #arche/statements, #arche/cluster and #arche/session 
 
 ``` clojure
 (require '[com.stuartsierra.component :as component])
-(require '[com.troy-west.arche-component :as arche])
+(require '[troy-west.arche-component :as arche])
 
 (def cassandra-config
   {:test/statements-1 #arche/statements["prepared/test.cql"]
