@@ -17,19 +17,19 @@ Arche allows:
 
 * [com.troy-west.arche/arche](https://github.com/troy-west/arche/tree/master/arche)
 
-  Provides a proxy session, UDT support, and an Alia extension that binds prepared statements allowing easy execution via any Alia execute function
+  Provides a Datastax session proxy, UDT support, and an Alia extension that binds prepared statements allowing easy execution via any Alia execute function
 
 * [com.troy-west.arche/arche-hugsql](https://github.com/troy-west/arche/tree/master/arche-hugsql)
 
-  Provides an extension of HugSQL to parse CQL prepared statements from a String, File, or map of Keyword->String
+  An extension of HugSQL to parse CQL prepared statements from a String, File, or map of Keyword->String
 
 * [com.troy-west.arche/arche-integrant](https://github.com/troy-west/arche/tree/master/arche-integrant)
 
-  Provides opinionated Cassandra state management via [Integrant](https://github.com/weavejester/integrant)
+  Opinionated Cassandra state management via [Integrant](https://github.com/weavejester/integrant)
 
 * [com.troy-west.arche/arche-component](https://github.com/troy-west/arche/tree/master/arche-component)
 
-  Provides opinionated Cassandra state management via [Component](https://github.com/stuartsierra/component)
+  Opinionated Cassandra state management via [Component](https://github.com/stuartsierra/component)
 
 ## Usage
 
