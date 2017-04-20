@@ -120,6 +120,13 @@ Use alia execute queries against the session.
 
 Arche-hugsql makes use of [HugSQL](https://www.hugsql.org/) to parse CQL prepared statements defined in CQL files, Strings or in a clojure map. It supports HugSQL [value parameters](https://www.hugsql.org/#param-value) and [identifier parameters](https://www.hugsql.org/#param-identifier). You can include the keywords in your CQL queries and the names will be properly quoted for you, automatically handling kebab cased keywords.
 
+i.e. these keywords will translate as follows
+* :my-value                 => :\"my-value\"
+* :v:my-value               => :\"my-value\"
+* :value:my-value           => :\"my-value\"
+* :i:my-identifier          => my_identifier as "\my-identifier\"
+* :identifier:my-identifier => my_identifier as "\my-identifier\"
+
 The cql parsing is all done through the `prepared-statements` function. This function produces a map of prepared statement Strings with the identifiers and values quoted.
 
 #### maps example
