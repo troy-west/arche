@@ -144,7 +144,7 @@ Create a file in the resources directory called foo_bar.cql
 
 ``` text
 --:name foo/bar
-select :i:foo-bar from emp where id = :id
+select :i:foo-bar from emp where id_num = :id-num
 ```
 
 Then cql file can be loaded like this:
