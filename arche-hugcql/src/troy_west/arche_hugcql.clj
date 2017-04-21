@@ -1,5 +1,5 @@
 (ns troy-west.arche-hugcql
-  (require [hugsql.core :as hugsql]))
+  (:require [hugsql.core :as hugsql]))
 
 (defn resolve-value
   [k]
