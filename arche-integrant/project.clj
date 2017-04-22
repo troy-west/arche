@@ -1,4 +1,4 @@
-(defproject com.troy-west/arche-integrant "0.1.0-SNAPSHOT"
+(defproject com.troy-west/arche-integrant "0.1.0"
   :description "Arche system configuration using the the Integrant library."
 
   :plugins [[lein-modules "0.3.11"]]
