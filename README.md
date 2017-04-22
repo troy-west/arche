@@ -266,7 +266,7 @@ Note: the data reader tags #arche/statements, #arche/cluster and #arche/session 
 Start the cassandra component.
 
 ``` clojure
-(def cassandra (component/start (component/map->SystemMap cassandra-config))
+(def cassandra (component/start (component/map->SystemMap cassandra-config)))
 ```
 
 Execute some prepared statements using alia.
