@@ -1,4 +1,4 @@
-(defproject com.troy-west/arche-component "0.1.1"
+(defproject com.troy-west/arche-component "0.1.2-SNAPSHOT"
   :description "Arche system configuration using the the Component library."
 
   :plugins [[lein-modules "0.3.11"]]
