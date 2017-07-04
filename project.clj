@@ -18,7 +18,7 @@
                         :subprocess          nil
                         :deploy-repositories [["releases" {:url "https://clojars.org/repo/" :creds :gpg}]]}
             :versions  {org.clojure/clojure           "1.8.0"
-                        cc.qbits/alia                 "4.0.0-beta9"
+                        cc.qbits/alia                 "4.0.0"
                         com.troy-west/arche           :version
                         com.troy-west/arche-hugcql    :version
                         com.troy-west/arche-integrant :version
