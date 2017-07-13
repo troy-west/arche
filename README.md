@@ -100,7 +100,7 @@ Use new UDT encoders.
 ``` clojure
 (arche/encode session ::asset {:code     "AB"
                                :currency "GBP"
-                               :notional "12"}
+                               :notional "12"})
 
 ;; creates UDTValue instance
 ;; #object[com.datastax.driver.core.UDTValue 0x29632e50 "{code:'AB',currency:'GBP',notional:'12'}"]
