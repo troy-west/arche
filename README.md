@@ -100,7 +100,7 @@ Use new UDT encoders.
 ``` clojure
 (arche/encode session ::asset {:code     "AB"
                                :currency "GBP"
-                               :notional "12"}
+                               :notional "12"})
 
 ;; creates UDTValue instance
 ;; #object[com.datastax.driver.core.UDTValue 0x29632e50 "{code:'AB',currency:'GBP',notional:'12'}"]
@@ -118,7 +118,7 @@ Use alia execute queries against the session.
 
 ### Parsing CQL prepared statements
 
-Arche-hugsql makes use of [HugSQL](https://www.hugsql.org/) to parse CQL prepared statements defined in CQL files, Strings or in a clojure map. It supports HugSQL [value parameters](https://www.hugsql.org/#param-value) and [identifier parameters](https://www.hugsql.org/#param-identifier). You can include the keywords in your CQL queries and the names will be properly quoted for you, automatically handling kebab cased keywords.
+Arche-hugcql makes use of [HugSQL](https://www.hugsql.org/) to parse CQL prepared statements defined in CQL files, Strings or in a clojure map. It supports HugSQL [value parameters](https://www.hugsql.org/#param-value) and [identifier parameters](https://www.hugsql.org/#param-identifier). You can include the keywords in your CQL queries and the names will be properly quoted for you, automatically handling kebab cased keywords.
 
 i.e. these keywords will translate as follows
 ``` text
@@ -134,16 +134,16 @@ The cql parsing is all done through the `prepared-statements` function. This fun
 #### maps example
 
 ``` clojure
-(require '[troy-west.arche-hugsql :as arche-hugsql])
+(require '[troy-west.arche-hugcql :as arche-hugcql])
 
-(arche-hugsql/prepared-statements {:foo/bar "select :i:foo-bar from emp as where id_num = :id-num"})
+(arche-hugcql/prepared-statements {:foo/bar "select :i:foo-bar from emp as where id_num = :id-num"})
 ;; => {:foo/bar "select foo_bar as \"foo-bar\" from emp as where id_num = :\"id-num\""}
 ```
 
 #### Strings example
 
 ``` clojure
-(arche-hugsql/prepared-statements "--:name foo/bar \nselect :i:foo-bar from emp where id_num = :id-num")
+(arche-hugcql/prepared-statements "--:name foo/bar \nselect :i:foo-bar from emp where id_num = :id-num")
 ;; => {:foo/bar "select foo_bar as \"foo-bar\" from emp as where id_num = :\"id-num\""}
 ```
 
@@ -159,7 +159,7 @@ select :i:foo-bar from emp where id_num = :id-num
 Then cql file can be loaded like this:
 
 ``` clojure
-(arche-hugsql/prepared-statements ["foo_bar.cql"])
+(arche-hugcql/prepared-statements ["foo_bar.cql"])
 ;; => {:foo/bar "select foo_bar as \"foo-bar\" from emp as where id_num = :\"id-num\""}
 ```
 
