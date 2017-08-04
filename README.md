@@ -17,17 +17,25 @@ Arche allows:
 
 * [com.troy-west.arche/arche](https://github.com/troy-west/arche/tree/master/arche)
 
+  [![Clojars Project](https://img.shields.io/clojars/v/com.troy-west/arche.svg)](https://clojars.org/com.troy-west/arche) [![CircleCI](https://circleci.com/gh/troy-west/arche.svg?style=svg)](https://circleci.com/gh/troy-west/arche)
+
   Provides a Datastax session proxy, UDT support, and an Alia extension that binds prepared statements allowing easy execution via any Alia execute function
 
 * [com.troy-west.arche/arche-hugcql](https://github.com/troy-west/arche/tree/master/arche-hugcql)
+
+  [![Clojars Project](https://img.shields.io/clojars/v/com.troy-west/arche-hugcql.svg)](https://clojars.org/com.troy-west/arche-hugcql)
 
   An extension of HugSQL to parse CQL prepared statements from a String, File, or map of Keyword->String
 
 * [com.troy-west.arche/arche-integrant](https://github.com/troy-west/arche/tree/master/arche-integrant)
 
+  [![Clojars Project](https://img.shields.io/clojars/v/com.troy-west/arche-integrant.svg)](https://clojars.org/com.troy-west/arche-integrant)
+
   Opinionated Cassandra state management via [Integrant](https://github.com/weavejester/integrant)
 
 * [com.troy-west.arche/arche-component](https://github.com/troy-west/arche/tree/master/arche-component)
+
+  [![Clojars Project](https://img.shields.io/clojars/v/com.troy-west/arche-component.svg)](https://clojars.org/com.troy-west/arche-component)
 
   Opinionated Cassandra state management via [Component](https://github.com/stuartsierra/component)
 
