@@ -8,3 +8,4 @@
   (let [statement (alia/query->statement ::test {} nil)]
     (is (instance? SimpleStatement statement))
     (is (instance? troy_west.arche.IBindable statement))))
+
