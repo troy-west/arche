@@ -9,5 +9,3 @@
     (is (instance? SimpleStatement statement))
     (is (instance? troy_west.arche.IBindable statement))))
 
-(deftest failing-test
-  (is (= 0 1)))
