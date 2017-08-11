@@ -32,7 +32,6 @@ jobs:
           - v1-dependencies-
 
       - run: lein modules install
-      - run: lein modules deps
 
       - save_cache:
           paths:
