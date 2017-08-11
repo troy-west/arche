@@ -23,7 +23,9 @@
                         com.troy-west/arche-hugcql    :version
                         com.troy-west/arche-integrant :version
                         com.troy-west/arche-component :version}}
-  
+
+  :test-selectors {:default (complement :integration)}
+
   :release-tasks [["vcs" "assert-committed"]
                   ["change" "version" "leiningen.release/bump-version" "release"]
                   ["modules" "change" "version" "leiningen.release/bump-version" "release"]

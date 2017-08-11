@@ -19,7 +19,7 @@
                                            :statements (ig/ref :test/statements-1)
                                            :udts       (ig/ref :test/udts-1)}})
 
-(deftest compoment-test
+(deftest ^:integration component-test
   (let [shutdowns (atom [])]
     (with-redefs [alia/cluster                     (fn [_] ::cluster)
                   arche/init-session               (fn [x] (keyword (str "session-" (:keyspace x))))

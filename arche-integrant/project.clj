@@ -5,4 +5,6 @@
 
   :dependencies [[com.troy-west/arche "_"]
                  [com.troy-west/arche-hugcql "_"]
-                 [integrant "0.3.3"]])
+                 [integrant "0.3.3"]]
+
+  :test-selectors {:default (complement :integration)})
