@@ -23,7 +23,7 @@
   (let [shutdowns (atom [])]
 
     (with-redefs [alia/cluster                     (fn [_] ::cluster)
-                  arche/connect                    (fn [connection opts] (keyword (str "session-" (:keyspace opts))))
+                  arche/connect                    (fn [_ opts] (keyword (str "session-" (:keyspace opts))))
                   arche-hugcql/prepared-statements (fn [_] ::statements)
                   alia/shutdown                    (fn [x] (swap! shutdowns
                                                                   conj
