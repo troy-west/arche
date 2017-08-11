@@ -6,6 +6,8 @@
 
   :plugins [[lein-modules "0.3.11"]]
 
+  :test-selectors {:default (complement :integration)}
+
   :profiles {:dev {:resource-paths ["test-resources"]
                    :dependencies [[com.smxemail/ccm-clj "1.1.0"]
                                   [ch.qos.logback/logback-classic "1.1.8"]]}})
