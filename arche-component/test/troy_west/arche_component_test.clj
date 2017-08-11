@@ -22,7 +22,7 @@
 (deftest compoment-test
   (let [shutdowns (atom [])]
     (with-redefs [alia/cluster                     (fn [_] ::cluster)
-                  arche/init-session               (fn [x] (keyword (str "session-" (:keyspace x))))
+                  arche/initialize-connection      (fn [x] (keyword (str "session-" (:keyspace x))))
                   arche-hugcql/prepared-statements (fn [_] ::statements)
                   alia/shutdown                    (fn [x] (swap! shutdowns
                                                                   conj

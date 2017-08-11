@@ -37,7 +37,7 @@
 
   (start [this]
     (println ";; Starting Cassandra SessionComponent")
-    (let [session (arche/init-session (update this :cluster :cluster))]
+    (let [session (arche/initialize-connection (update this :cluster :cluster))]
       (assoc this :session session)))
 
   (stop [this]
@@ -59,4 +59,4 @@
 
 (defn encode
   [session udts-key value]
-  (arche/encode session udts-key value))
+  (arche/encode-udt session udts-key value))

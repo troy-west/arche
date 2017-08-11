@@ -33,26 +33,22 @@
   (ccm/stop!)
   (reset! system {}))
 
-(use-fixtures :each (fn [test-fn]
-                      (when-not @system
-                        (start-system!))
-                      (test-fn)))
-
 (use-fixtures :once (fn [test-fn]
+                      (start-system!)
                       (test-fn)
                       (stop-system!)))
 
-(deftest ^:integration connection-wrapper-test
+(deftest connection-wrapper-test
   (is (instance? Session (:connection @system))))
 
-(deftest ^:integration encoders-test
+(deftest encoders-test
   (let [encoded (arche/encode-udt (:connection @system)
                                   ::asset {:code     "AB"
                                            :currency "GBP"
                                            :notional "12"})]
     (is (instance? UDTValue encoded))))
 
-(deftest ^:integration statement-query-test
+(deftest statement-query-test
   (let [session (:connection @system)]
     (alia/execute session ::insert-client {:values {:id "id-1" :name "Carol"}})
     (is (= {:id "id-1", :name "Carol"}

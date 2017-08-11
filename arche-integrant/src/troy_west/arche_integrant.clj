@@ -10,7 +10,7 @@
 
 (defmethod ig/init-key :cassandra/session
   [_ config]
-  (arche/init-session config))
+  (arche/initialize-connection config))
 
 (defmethod ig/init-key :arche/statements
   [_ config]
@@ -34,4 +34,4 @@
 
 (defn encode
   [session udts-key value]
-  (arche/encode session udts-key value))
+  (arche/encode-udt session udts-key value))
