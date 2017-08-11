@@ -35,8 +35,8 @@
 
 (use-fixtures :each (fn [test-fn]
                       (when-not @system
-                        (start-system!)
-                        (test-fn))))
+                        (start-system!))
+                      (test-fn)))
 
 (use-fixtures :once (fn [test-fn]
                       (test-fn)
