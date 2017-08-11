@@ -33,15 +33,16 @@
     (encoder value)))
 
 (defn connect
-  [cluster {:keys [keyspace statements udts mode]}]
-  (let [session (if keyspace (alia/connect cluster keyspace)
-                             (alia/connect cluster))]
-    {:session      session
-     :statements   (prepare-statements session statements)
-     :udt-encoders (prepare-encoders session udts)}))
+  ([cluster]
+    (connect cluster nil))
+  ([cluster {:keys [keyspace statements udts]}]
+   {:pre [cluster]}
+   (let [session (if keyspace (alia/connect cluster keyspace)
+                              (alia/connect cluster))]
+     {:session      session
+      :statements   (prepare-statements session statements)
+      :udt-encoders (prepare-encoders session udts)})))
 
-;; standard
-;; execute / execute-async
 (defn execute
   ([connection query]
    (execute connection query nil))

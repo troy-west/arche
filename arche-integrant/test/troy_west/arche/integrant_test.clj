@@ -1,9 +1,9 @@
-(ns troy-west.arche-integrant-test
+(ns troy-west.arche.integrant-test
   (:require [clojure.test :refer [deftest is use-fixtures]]
-            [troy-west.arche-integrant :as ai]
-            [integrant.core :as ig]
+            [troy-west.arche.integrant :as ai]
             [troy-west.arche :as arche]
             [troy-west.arche-hugcql :as arche-hugcql]
+            [integrant.core :as ig]
             [qbits.alia :as alia]))
 
 (def cassandra-config
@@ -19,14 +19,16 @@
                                            :statements (ig/ref :test/statements-1)
                                            :udts       (ig/ref :test/udts-1)}})
 
-(deftest ^:integration component-test
+(deftest ^:integration integrant-test
   (let [shutdowns (atom [])]
+
     (with-redefs [alia/cluster                     (fn [_] ::cluster)
-                  arche/initialize-connection      (fn [x] (keyword (str "session-" (:keyspace x))))
+                  arche/connect                    (fn [connection opts] (keyword (str "session-" (:keyspace opts))))
                   arche-hugcql/prepared-statements (fn [_] ::statements)
                   alia/shutdown                    (fn [x] (swap! shutdowns
                                                                   conj
                                                                   (keyword (str "shutdown-" (name x)))))]
+
       (let [init-comp (ig/init cassandra-config)]
         (is (= {[:arche/statements :test/statements-1] ::statements,
                 [:arche/udts :test/udts-1]             {::asset {:name "asset"}},
@@ -35,8 +37,8 @@
                 [:cassandra/session :test/session-2]   :session-foobar}
                init-comp))
 
-        (is (= (ai/session init-comp :test/session-1) :session-sandbox)
-            (= (ai/session init-comp :test/session-2) :session-foobar))
+        (is (= (ai/connection init-comp :test/session-1) :session-sandbox)
+            (= (ai/connection init-comp :test/session-2) :session-foobar))
 
         (let [stop-comp (ig/halt! init-comp)]
           (is (= @shutdowns [:shutdown-session-foobar
