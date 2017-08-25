@@ -5,17 +5,16 @@
             [ccm-clj.core :as ccm])
   (:import [com.datastax.driver.core UDTValue Session]))
 
-(use-fixtures :once (fn [test-fn]
-                      (fixture/start-system!)
-                      (test-fn)
-                      (fixture/stop-system!)))
+(use-fixtures :once fixture/wrap-test)
 
 (deftest encoders-test
 
-  (let [encoded (arche/encode-udt (:connection @fixture/system)
-                                  :arche/asset {:code     "AB"
-                                                :currency "GBP"
-                                                :notional "12"})]
+  (let [encoded (arche/encode-udt (fixture/connection)
+                                  :arche/asset
+                                  {:code     "AB"
+                                   :currency "GBP"
+                                   :notional "12"})]
+
     (is (instance? UDTValue encoded))))
 
 (deftest insert-select-test

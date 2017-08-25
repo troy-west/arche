@@ -39,3 +39,9 @@
 (defn connection
   []
   (:connection @system))
+
+(defn wrap-test
+  [test-fn]
+  (start-system!)
+  (test-fn)
+  (stop-system!))
