@@ -74,7 +74,7 @@ CREATE TABLE client (
     PRIMARY KEY (id));
 ```
 
-### Externalise CQL Statements in HugsCQL Files/Resources
+### Externalise CQL Statements in HugsCQL files/resources
 
 [Arche-HugCQL](https://github.com/troy-west/arche/tree/master/arche-hugcql) makes use of [HugSQL](https://www.hugsql.org/) to parse CQL statements externalised in files or resources. 
 
@@ -164,21 +164,21 @@ Create an arche connection with the cluster and (optional) keyspace, statements,
 ``` clojure
 (require '[troy-west.arche :as arche])
 
-(def connection (arche/connect cluster {:keyspace "sandbox" :statements statements :udts udts}))
+(def connection (arche/connect cluster {:keyspace "sandbox" :statements [statements] :udts [udts]}))
 ```
 
 Using UDT encoders.
 
 ``` clojure
-(arche/encodeudt session :test/asset {:code     "AB"
-                                     :currency "GBP"
-                                     :notional "12"})
+(arche/encode-udt session :test/asset {:code     "AB"
+                                       :currency "GBP"
+                                       :notional "12"})
 
 ;; creates UDTValue instance
 ;; #object[com.datastax.driver.core.UDTValue 0x29632e50 "{code:'AB',currency:'GBP',notional:'12'}"]
 ```
 
-Arche provides functions that shadow all standard Alia execution with a connection. 
+Arche provides modules/functions that shadow all standard Alia execution, using an Arche connection rather than a Datastax session.  
 
 ``` clojure
 (arche/execute connection :test/insert-client {:values {:id "id-1" :name "Carol"}})
@@ -190,7 +190,6 @@ Arche provides functions that shadow all standard Alia execution with a connecti
 
 ### DI/Lifecycle management with [Integrant](https://github.com/weavejester/integrant) (recommended)
 
-```
 Define the integrant cassandra configuration, can either be defined in a text file or in code.
 
 
@@ -201,7 +200,7 @@ Define the integrant cassandra configuration, can either be defined in a text fi
 (def cassandra-config
   {[:arche/cluster :test/cluster]   {:contact-points ["127.0.0.1"] :port 19142}
    [:arche/session :test/session]   {:keyspace   "sandbox"
-                                     :cluster    (ig/ref :test/cluster)
+                                     :cluster    #ig/ref :test/cluster
                                      :statements [#arche.hugcql/statements "stmts1.hcql"
                                                   #arche.hugcql/statements "stmts2.hcql]
                                      :udts       [{::asset {:name "asset"}}]}})
