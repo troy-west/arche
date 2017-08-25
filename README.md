@@ -120,15 +120,15 @@ Note the quoted identifier for asset-basket in test/insert-trade and test/select
   (arche/execute connection 
                  :test/insert-trade 
                  {:values {:id           "some-id"
-                           :asset-basket {"pork-bellies" encoded-udt}}}}) ;; writing hyphenated keys
+                           :asset-basket {"long" encoded-udt}}}}) ;; writing hyphenated keys
 
   (arche/execute connection
                  :test/select-trade
                  {:values {:id "id"}}))
 
 => [{:id           "some-id"
-     :asset-basket {"pork-bellies" {:code     "PB" ;; reading hyphenated keys
-                                    :currency "GBP"
+     :asset-basket {"long" {:code     "PB" ;; reading hyphenated keys
+                            :currency "GBP"
                                     :notional "12"}}}]
 ```
 
