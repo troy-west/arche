@@ -1,16 +1,16 @@
-# Arche: Cassandra Clojure State Management with Alia
+# Arche: A Clojure Battery Pack for Cassandra and Alia
 
-> [Arche](https://en.wikipedia.org/wiki/Arche): A Greek word with primary senses "beginning", "origin", or "source of action"<br/>
 > [Arche](https://en.wikipedia.org/wiki/Arche_(mythology)): The ancient Greek muse of origins
 
 ## Summary
 
-Arche allows:
+Arche provides:
 
-* Easy DI/Lifecycle management of Cassandra state (cluster/session/statement/UDT) via [Integrant](https://github.com/weavejester/integrant) or [Component](https://github.com/stuartsierra/component)
-* Definition of prepared statements through an extension of [HugSQL](https://github.com/layerware/hugsql) to support CQL
-* Execution of prepared statements via an extension of [Alia](https://github.com/mpenet/alia)
+* DI/Lifecycle management of Cassandra state (cluster/session/statement/UDT) via [Integrant](https://github.com/weavejester/integrant) or [Component](https://github.com/stuartsierra/component)
+* Externalisation of prepared statement configuration via a CQL extension of [HugSQL](https://github.com/layerware/hugsql)
 * Seamless support for existing [Alia](https://github.com/mpenet/alia) execution
+* Execution of prepared statements by keyword
+* Encoding of UDT types by keyword
 * As much configuration from EDN as possible
 
 ## Modules
@@ -19,25 +19,37 @@ Arche allows:
 
   [![Clojars Project](https://img.shields.io/clojars/v/com.troy-west/arche.svg)](https://clojars.org/com.troy-west/arche) [![CircleCI](https://circleci.com/gh/troy-west/arche.svg?style=svg)](https://circleci.com/gh/troy-west/arche)
 
-  Provides a Datastax session proxy, UDT support, and an Alia extension that binds prepared statements allowing easy execution via any Alia execute function
+  Cassandra state management, statement preperation and execution, and UDT encoding.
 
 * [com.troy-west.arche/arche-hugcql](https://github.com/troy-west/arche/tree/master/arche-hugcql)
 
   [![Clojars Project](https://img.shields.io/clojars/v/com.troy-west/arche-hugcql.svg)](https://clojars.org/com.troy-west/arche-hugcql)
 
-  An extension of HugSQL to parse CQL prepared statements from a String, File, or map of Keyword->String
+  Parse CQL statements from file or resource in HugsSQL format, provides automatic hyphen/underscore translation.
 
 * [com.troy-west.arche/arche-integrant](https://github.com/troy-west/arche/tree/master/arche-integrant)
 
   [![Clojars Project](https://img.shields.io/clojars/v/com.troy-west/arche-integrant.svg)](https://clojars.org/com.troy-west/arche-integrant)
 
-  Opinionated Cassandra state management via [Integrant](https://github.com/weavejester/integrant)
+  Cassandra lifecycle and DI via [Integrant](https://github.com/weavejester/integrant)
 
 * [com.troy-west.arche/arche-component](https://github.com/troy-west/arche/tree/master/arche-component)
 
   [![Clojars Project](https://img.shields.io/clojars/v/com.troy-west/arche-component.svg)](https://clojars.org/com.troy-west/arche-component)
 
-  Opinionated Cassandra state management via [Component](https://github.com/stuartsierra/component)
+  Cassandra lifecycle and DI via [Component](https://github.com/stuartsierra/component)
+
+* [com.troy-west.arche/arche-async](https://github.com/troy-west/arche/tree/master/arche-async)
+
+  [![Clojars Project](https://img.shields.io/clojars/v/com.troy-west/arche-async.svg)](https://clojars.org/com.troy-west/arche-async)
+
+  Core.async statement execution (shadows alia.async)
+
+* [com.troy-west.arche/arche-manifold](https://github.com/troy-west/arche/tree/master/arche-manifold)
+
+  [![Clojars Project](https://img.shields.io/clojars/v/com.troy-west/arche-manifold.svg)](https://clojars.org/com.troy-west/arche-manifold)
+
+  Manifold statement execution (shadows alia.async)
 
 ## Usage
 
