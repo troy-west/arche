@@ -35,3 +35,7 @@
   (alia/shutdown (:cluster @system))
   (ccm/stop!)
   (reset! system {}))
+
+(defn connection
+  []
+  (:connection @system))
