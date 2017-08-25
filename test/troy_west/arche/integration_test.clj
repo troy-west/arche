@@ -44,3 +44,11 @@
 
     (test-udt-encoding mode connection)
     (test-write-then-read mode connection)))
+
+(deftest integrant
+
+  (let [mode       "integrant"
+        connection (fixture/connection mode)]
+
+    (test-udt-encoding mode connection)
+    (test-write-then-read mode connection)))

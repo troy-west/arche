@@ -3,10 +3,13 @@
             [troy-west.arche :as arche]
             [troy-west.arche.hugcql :as arche.hugcql]
             [troy-west.arche.component :as arche.component]
-            [troy-west.arche-spec :as arche-spec]
+            [troy-west.arche.integrant :as arche.integrant]
+            [troy-west.arche.spec :as arche.spec]
             [qbits.alia :as alia]
             [ccm-clj.core :as ccm]
-            [com.stuartsierra.component :as component]))
+            [com.stuartsierra.component :as component]
+            [integrant.core :as integrant]
+            [integrant.core :as ig]))
 
 (defonce system (atom {}))
 
@@ -37,12 +40,20 @@
                                                           :statements [#arche.hugcql/statements "cql/test1.hcql"
                                                                        #arche.hugcql/statements "cql/test2.hcql"]
                                                           :udts       [{:arche/asset {:name "asset"}}]
-                                                          :cluster    :cluster}})]
+                                                          :cluster    :cluster}})
+
+        integrant-system (integrant/init {:arche/cluster    {:contact-points ["127.0.0.1"] :port 19142}
+                                          :arche/connection {:keyspace   "sandbox"
+                                                             :cluster    (integrant/ref :arche/cluster)
+                                                             :statements statements
+                                                             :udts       udts}})]
 
     (reset! system {"hand-rolled" {:cluster    hand-cluster
                                    :connection hand-connection}
                     "component"   {:connection (:connection component-system)
-                                   :system     component-system}})))
+                                   :system     component-system}
+                    "integrant"   {:connection (:arche/connection integrant-system)
+                                   :system     integrant-system}})))
 
 (defn connection
   [mode]
@@ -54,12 +65,14 @@
   (alia/shutdown (get-in @system ["hand-rolled" :cluster]))
 
   (component/stop-system (get-in @system ["component" :system]))
+  (ig/halt! (get-in @system ["integrant" :system]))
+
   (ccm/stop!)
   (reset! system {}))
 
 (defn wrap-test
   [test-fn]
-  (arche-spec/instrument!)
+  (arche.spec/instrument!)
   (start-system!)
   (test-fn)
   (stop-system!))

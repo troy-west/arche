@@ -200,11 +200,11 @@ Note: The `ig/ref` calls can be replaced by integrant `#ref` tag to allow the co
 (def cassandra-config
   {[:arche/statements :test/statements-1] ["prepared/test.cql"]
    [:arche/udts :test/udts-1]             {::asset {:name "asset"}}
-   [:cassandra/cluster :test/cluster-1]   {:contact-points ["127.0.0.1"] :port 19142}
-   [:cassandra/session :test/session-1]   {:keyspace   "sandbox"
-                                           :cluster    (ig/ref :test/cluster-1)
-                                           :statements (ig/ref :test/statements-1)
-                                           :udts       (ig/ref :test/udts-1)}})
+   [:arche/cluster :test/cluster-1]   {:contact-points ["127.0.0.1"] :port 19142}
+   [:arche/session :test/session-1]   {:keyspace   "sandbox"
+                                       :cluster    (ig/ref :test/cluster-1)
+                                       :statements (ig/ref :test/statements-1)
+                                       :udts       (ig/ref :test/udts-1)}})
 ```
 
 Start the cassandra component.

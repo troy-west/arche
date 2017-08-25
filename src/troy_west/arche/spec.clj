@@ -1,7 +1,7 @@
-(ns troy-west.arche-spec
+(ns troy-west.arche.spec
   (:require [clojure.future :refer [any?]]
             [clojure.spec.alpha :as s]
-            [clojure.spec.test.alpha :as stest]
+            [clojure.spec.test.alpha :as spec.test]
             [troy-west.arche :as arche]
             [qbits.alia :as alia])
   (:import (com.datastax.driver.core SessionManager Cluster)))
@@ -64,12 +64,12 @@
 
 (defn instrument!
   []
-  (stest/instrument '[troy-west.arche/prepare-statements
-                      troy-west.arche/prepare-encoders
-                      troy-west.arche/statement
-                      troy-west.arche/udt-encoder
-                      troy-west.arche/encode-udt
-                      troy-west.arche/connect
-                      troy-west.arche/disconnect
-                      troy-west.arche/execute
-                      troy-west.arche/execute-async]))
+  (spec.test/instrument '[troy-west.arche/prepare-statements
+                          troy-west.arche/prepare-encoders
+                          troy-west.arche/statement
+                          troy-west.arche/udt-encoder
+                          troy-west.arche/encode-udt
+                          troy-west.arche/connect
+                          troy-west.arche/disconnect
+                          troy-west.arche/execute
+                          troy-west.arche/execute-async]))

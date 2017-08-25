@@ -6,11 +6,11 @@
 ;;;;;;;;;;;
 ;; Start
 
-(defmethod ig/init-key :cassandra/cluster
+(defmethod ig/init-key :arche/cluster
   [_ config]
   (alia/cluster config))
 
-(defmethod ig/init-key :cassandra/connection
+(defmethod ig/init-key :arche/connection
   [_ config]
   (arche/connect (:cluster config)
                  (dissoc config :cluster)))
@@ -18,10 +18,10 @@
 ;;;;;;;;;;;
 ;;; Stop
 
-(defmethod ig/halt-key! :cassandra/cluster
+(defmethod ig/halt-key! :arche/cluster
   [_ cluster]
   (alia/shutdown cluster))
 
-(defmethod ig/halt-key! :cassandra/connection
+(defmethod ig/halt-key! :arche/connection
   [_ connection]
   (alia/shutdown connection))

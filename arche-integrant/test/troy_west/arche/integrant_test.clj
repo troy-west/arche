@@ -6,15 +6,15 @@
             [qbits.alia :as alia]))
 
 (def cassandra-config
-  {[:cassandra/cluster :test/cluster-1]       {:contact-points ["127.0.0.1"] :port 19142}
-   [:cassandra/connection :test/connection-1] {:keyspace   "sandbox"
-                                               :cluster    (integrant/ref :test/cluster-1)
-                                               :statements []
-                                               :udts       {::asset {:name "asset"}}}
-   [:cassandra/connection :test/connection-2] {:keyspace   "foobar"
-                                               :cluster    (integrant/ref :test/cluster-1)
-                                               :statements []
-                                               :udts       {::asset {:name "asset"}}}})
+  {[:arche/cluster :test/cluster-1]       {:contact-points ["127.0.0.1"] :port 19142}
+   [:arche/connection :test/connection-1] {:keyspace   "sandbox"
+                                           :cluster    (integrant/ref :test/cluster-1)
+                                           :statements []
+                                           :udts       {::asset {:name "asset"}}}
+   [:arche/connection :test/connection-2] {:keyspace   "foobar"
+                                           :cluster    (integrant/ref :test/cluster-1)
+                                           :statements []
+                                           :udts       {::asset {:name "asset"}}}})
 
 (deftest integrant-test
   (let [shutdowns (atom [])]
@@ -26,9 +26,9 @@
                                                (keyword (str "shutdown-" (name x)))))]
 
       (let [init-comp (integrant/init cassandra-config)]
-        (is (= {[:cassandra/cluster :test/cluster-1]       ::cluster,
-                [:cassandra/connection :test/connection-1] :connection-sandbox,
-                [:cassandra/connection :test/connection-2] :connection-foobar}
+        (is (= {[:arche/cluster :test/cluster-1]       ::cluster,
+                [:arche/connection :test/connection-1] :connection-sandbox,
+                [:arche/connection :test/connection-2] :connection-foobar}
                init-comp))
 
         (let [stop-comp (integrant/halt! init-comp)]

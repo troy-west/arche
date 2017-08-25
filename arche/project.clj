@@ -4,7 +4,5 @@
   :license {:name "Eclipse Public License"
             :url  "http://www.eclipse.org/legal/epl-v10.html"}
 
-  :dependencies [[clojure-future-spec "_"]]
-
   :plugins [[lein-modules "0.3.11"]])
 
