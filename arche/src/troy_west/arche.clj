@@ -40,7 +40,7 @@
                               (alia/connect cluster))]
      {:session      session
       :statements   (prepare-statements session (apply merge statements))
-      :udt-encoders (prepare-encoders session udts)})))
+      :udt-encoders (prepare-encoders session (apply merge udts))})))
 
 (defn execute
   ([connection query]

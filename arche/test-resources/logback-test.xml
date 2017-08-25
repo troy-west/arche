@@ -5,11 +5,6 @@
         </encoder>
     </appender>
 
-    <logger name="com.datastax.shaded.netty" level="INFO"/>
-    <logger name="org.apache.cassandra" level="INFO"/>
-    <logger name="com.datastax.driver" level="INFO"/>
-    <logger name="ccm-clj" level="INFO"/>
-
     <root level="DEBUG">
         <appender-ref ref="STDOUT"/>
     </root>
