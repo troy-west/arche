@@ -80,7 +80,7 @@ CREATE TABLE client (
 
 The --:name field is converted into (an optionally namespaced) keyword that identifies this statement for execution.
 
-Hyphens in selected columns and named parameters are automatically supported by the [quoted identifier technique described here](https://stackoverflow.com/questions/20243562/clojure-variable-names-for-database-column-names/33259288#33259288).
+Hyphens in select columns and named parameters are automatically translated by the [quoted identifier technique](https://stackoverflow.com/questions/20243562/clojure-variable-names-for-database-column-names/33259288#33259288).
 
 e.g. The following HugCQL file:
 
@@ -107,20 +107,29 @@ Translates to the following map of key -> statements:
  :test/select-trade  "SELECT id, asset_basket as \"asset-basket\" FROM trade where id = :id"}
 ```
 
-Note the quoted parameters for asset-basket in test/insert-trade and test/select-trade, this allows you insert and select maps of data with kebab-case keywords:
+Note the quoted identifier for asset-basket in test/insert-trade and test/select-trade, this allows you insert and select maps of data with kebab-case keywords:
 
 ```clojure
-(arche/execute connection 
-               :test/insert-trade 
-               {:values {:id           "id"
-                         :asset-basket "basket"}})
 
-(arche/execute connection
-               :test/select-trade
-               {:values {:id "id"}}))
+;; in this particular schema the asset is a UDT, more on udt encoders below.
+(let [encoded-udt (arche/encode-udt connection
+                                    :arche/asset
+                                    {:code     "PB"
+                                     :currency "GBP"
+                                     :notional "12"})]
+  (arche/execute connection 
+                 :test/insert-trade 
+                 {:values {:id           "some-id"
+                           :asset-basket {"pork-bellies" encoded-udt}}}})
 
-=> [{:id           "id"
-     :asset-basket "basket"}]
+  (arche/execute connection
+                 :test/select-trade
+                 {:values {:id "id"}}))
+
+=> [{:id           "some-id"
+     :asset-basket {"pork-bellies" {:code     "PB"
+                                    :currency "GBP"
+                                    :notional "12"}}}]
 ```
 ### Usage without Integrant or Component
 
