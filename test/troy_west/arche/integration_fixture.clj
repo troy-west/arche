@@ -2,7 +2,8 @@
   (:require [clojure.test :refer :all]
             [ccm-clj.core :as ccm]
             [qbits.alia :as alia]
-            [troy-west.arche :as arche]))
+            [troy-west.arche :as arche]
+            [troy-west.arche-spec :as arche-spec]))
 
 (defonce system (atom {}))
 
@@ -42,6 +43,7 @@
 
 (defn wrap-test
   [test-fn]
+  (arche-spec/instrument!)
   (start-system!)
   (test-fn)
   (stop-system!))
