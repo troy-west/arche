@@ -127,11 +127,18 @@ Note the quoted identifier for asset-basket in test/insert-trade and test/select
                  {:values {:id "id"}}))
 
 => [{:id           "some-id"
-     :asset-basket {"pork-bellies" {:code     "PB"
+     :asset-basket {"pork-bellies" {:code     "PB" ;; reading hyphenated keys
                                     :currency "GBP"
                                     :notional "12"}}}]
 ```
-### Usage without Integrant or Component
+
+For convenience, a tagged literal is provided that translates file/resource paths to statements maps, e.g:
+
+```text
+#arche.hugcql/statements "stmts1.hcql"
+```
+
+### Lifecycle without Integrant or Component
 
 Create a cluster instance using alia.
 
@@ -144,124 +151,60 @@ Create a cluster instance using alia.
 Define some statements and UDT's.
 
 ``` clojure
-(def udts {::asset {:name "asset"}})
+(def udts {:test/asset {:name "asset"}})
 
-(def statements {::insert-client "INSERT INTO client (id, name) VALUES (:id, :name)"
-                 ::select-client "SELECT * FROM client WHERE id = :id"
-                 ::insert-trade  "INSERT INTO trade (id, asset_basket) VALUES (:id, :\"asset-basket\")"
-                 ::select-trade  "SELECT id, asset_basket as \"asset-basket\" FROM trade where id = :id"})
+(def statements {:test/insert-client "INSERT INTO client (id, name) VALUES (:id, :name)"
+                 :test/select-client "SELECT * FROM client WHERE id = :id"
+                 :test/insert-trade  "INSERT INTO trade (id, asset_basket) VALUES (:id, :\"asset-basket\")"
+                 :test/select-trade  "SELECT id, asset_basket as \"asset-basket\" FROM trade where id = :id"})
 ```
 
-Create an arche session with the cluster and the sandbox keyspace and pass the statements and UDT's as options.
+Create an arche connection with the cluster and (optional) keyspace, statements, and UDT's.
 
 ``` clojure
 (require '[troy-west.arche :as arche])
 
-(def session (arche/connect cluster "sandbox" {:statements statements :udts udts}))
+(def connection (arche/connect cluster {:keyspace "sandbox" :statements statements :udts udts}))
 ```
 
-Use new UDT encoders.
+Using UDT encoders.
 
 ``` clojure
-(arche/encode session ::asset {:code     "AB"
-                               :currency "GBP"
-                               :notional "12"})
+(arche/encodeudt session :test/asset {:code     "AB"
+                                     :currency "GBP"
+                                     :notional "12"})
 
 ;; creates UDTValue instance
 ;; #object[com.datastax.driver.core.UDTValue 0x29632e50 "{code:'AB',currency:'GBP',notional:'12'}"]
 ```
 
-Use alia execute queries against the session.
+Arche provides functions that shadow all standard Alia execution with a connection. 
 
 ``` clojure
-(alia/execute session ::insert-client {:values {:id "id-1" :name "Carol"}})
+(arche/execute connection :test/insert-client {:values {:id "id-1" :name "Carol"}})
 
-(alia/execute-chan session ::insert-client {:values {:id "id-1" :name "Carol"}})
+(arche.async/execute-chan connection :test/insert-client {:values {:id "id-1" :name "Carol"}})
 
-(alia/execute-async session ::insert-client {:values {:id "id-1" :name "Carol"}})
+(arche.manifold/execute connection :test/insert-client {:values {:id "id-1" :name "Carol"}})
 ```
 
-### Parsing CQL prepared statements
+### DI/Lifecycle management with [Integrant](https://github.com/weavejester/integrant) (recommended)
 
-Arche-hugcql makes use of [HugSQL](https://www.hugsql.org/) to parse CQL prepared statements defined in CQL files, Strings or in a clojure map. It supports HugSQL [value parameters](https://www.hugsql.org/#param-value) and [identifier parameters](https://www.hugsql.org/#param-identifier). You can include the keywords in your CQL queries and the names will be properly quoted for you, automatically handling kebab cased keywords.
-
-i.e. these keywords will translate as follows
-``` text
-:my-value                 => :\"my-value\"
-:v:my-value               => :\"my-value\"
-:value:my-value           => :\"my-value\"
-:i:my-identifier          => my_identifier as "\my-identifier\"
-:identifier:my-identifier => my_identifier as "\my-identifier\"
 ```
-
-The cql parsing is all done through the `prepared-statements` function. This function produces a map of prepared statement Strings with the identifiers and values quoted.
-
-#### maps example
-
-``` clojure
-(require '[troy-west.arche-hugcql :as arche-hugcql])
-
-(arche-hugcql/prepared-statements {:foo/bar "select :i:foo-bar from emp as where id_num = :id-num"})
-;; => {:foo/bar "select foo_bar as \"foo-bar\" from emp as where id_num = :\"id-num\""}
-```
-
-#### Strings example
-
-``` clojure
-(arche-hugcql/prepared-statements "--:name foo/bar \nselect :i:foo-bar from emp where id_num = :id-num")
-;; => {:foo/bar "select foo_bar as \"foo-bar\" from emp as where id_num = :\"id-num\""}
-```
-
-#### Files example
-
-Create a file in the resources directory called foo_bar.cql
-
-``` text
---:name foo/bar
-select :i:foo-bar from emp where id_num = :id-num
-```
-
-Then cql file can be loaded like this:
-
-``` clojure
-(arche-hugcql/prepared-statements ["foo_bar.cql"])
-;; => {:foo/bar "select foo_bar as \"foo-bar\" from emp as where id_num = :\"id-num\""}
-```
-
-### [Integrant](https://github.com/weavejester/integrant) DI/Lifecycle Management (recommended)
-
-Create prepared statements cql in `prepared/test.cql`
-
-``` text
---:name arche/insert-client
-INSERT INTO client (id, name) VALUES (:id, :name)
-
---:name arche/select-client
-SELECT * FROM client WHERE id = :id
-
---:name arche/insert-trade
-INSERT INTO trade (id, asset_basket) VALUES (:id, :asset-basket)
-
---:name arche/select-trade
-SELECT id, :i:asset-basket FROM trade where id = :id
-```
-
 Define the integrant cassandra configuration, can either be defined in a text file or in code.
 
-Note: The `ig/ref` calls can be replaced by integrant `#ref` tag to allow the config to be defined declaratively as EDN data.
 
 ``` clojure
 (require '[integrant.core :as ig])
 (require '[troy-west.arche-integrant :as arche])
 
 (def cassandra-config
-  {[:arche/statements :test/statements-1] ["prepared/test.cql"]
-   [:arche/udts :test/udts-1]             {::asset {:name "asset"}}
-   [:arche/cluster :test/cluster-1]   {:contact-points ["127.0.0.1"] :port 19142}
-   [:arche/session :test/session-1]   {:keyspace   "sandbox"
-                                       :cluster    (ig/ref :test/cluster-1)
-                                       :statements (ig/ref :test/statements-1)
-                                       :udts       (ig/ref :test/udts-1)}})
+  {[:arche/cluster :test/cluster]   {:contact-points ["127.0.0.1"] :port 19142}
+   [:arche/session :test/session]   {:keyspace   "sandbox"
+                                     :cluster    (ig/ref :test/cluster)
+                                     :statements [#arche.hugcql/statements "stmts1.hcql"
+                                                  #arche.hugcql/statements "stmts2.hcql]
+                                     :udts       [{::asset {:name "asset"}}]}})
 ```
 
 Start the cassandra component.
