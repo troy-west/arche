@@ -74,18 +74,54 @@ CREATE TABLE client (
     PRIMARY KEY (id));
 ```
 
-Example of creating a cluster:
+### Externalise CQL Statements in HugsCQL Files/Resources
 
-``` clojure
-(require '[ccm-clj.core :as ccm])
-(ccm/auto-cluster! "arche"
-                   "2.2.6"
-                   3
-                   [#"test-resources/test-keyspace\.cql"]
-                   {"sandbox" [#"test-resources/test-tables\.cql"]}
-                   19142)
+[Arche-HugCQL](https://github.com/troy-west/arche/tree/master/arche-hugcql) makes use of [HugSQL](https://www.hugsql.org/) to parse CQL statements externalised in files or resources. 
+
+The --:name field is converted into (an optionally namespaced) keyword that identifies this statement for execution.
+
+Hyphens in selected columns and named parameters are automatically supported by the [quoted identifier technique described here](https://stackoverflow.com/questions/20243562/clojure-variable-names-for-database-column-names/33259288#33259288).
+
+e.g. The following HugCQL file:
+
+```text
+--:name test/insert-client
+INSERT INTO client (id, name) VALUES (:id, :name)
+
+--:name test/select-client
+SELECT * FROM client WHERE id = :id
+
+--:name test/insert-trade
+INSERT INTO trade (id, asset_basket) VALUES (:id, :asset-basket)
+
+--:name test/select-trade
+SELECT id, :i:asset-basket FROM trade where id = :id
 ```
 
+Translates to the following map of key -> statements:
+
+```clojure
+{:test/insert-client "INSERT INTO client (id, name) VALUES (:id, :name)"
+ :test/select-client "SELECT * FROM client WHERE id = :id"
+ :test/insert-trade  "INSERT INTO trade (id, asset_basket) VALUES (:id, :\"asset-basket\")"
+ :test/select-trade  "SELECT id, asset_basket as \"asset-basket\" FROM trade where id = :id"}
+```
+
+Note the quoted parameters for asset-basket in test/insert-trade and test/select-trade, this allows you insert and select maps of data with kebab-case keywords:
+
+```clojure
+(arche/execute connection 
+               :test/insert-trade 
+               {:values {:id           "id"
+                         :asset-basket "basket"}})
+
+(arche/execute connection
+               :test/select-trade
+               {:values {:id "id"}}))
+
+=> [{:id           "id"
+     :asset-basket "basket"}]
+```
 ### Usage without Integrant or Component
 
 Create a cluster instance using alia.
