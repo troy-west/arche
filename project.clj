@@ -13,7 +13,8 @@
                  [com.troy-west/arche-integrant "_"]
                  [com.troy-west/arche-component "_"]
                  [com.troy-west/arche-async "_"]
-                 [com.troy-west/arche-manifold "_"]]
+                 [com.troy-west/arche-manifold "_"]
+                 [clojure-future-spec "_"]]
 
   :profiles {:dev {:resource-paths ["test-resources"]
                    :dependencies   [[com.smxemail/ccm-clj "1.1.0"]
@@ -24,6 +25,7 @@
                         :subprocess          nil
                         :deploy-repositories [["releases" {:url "https://clojars.org/repo/" :creds :gpg}]]}
             :versions  {org.clojure/clojure           "1.8.0"
+                        clojure-future-spec           "1.9.0-alpha17"
                         cc.qbits/alia                 "4.0.0"
                         cc.qbits/alia-async           "4.0.0"
                         cc.qbits/alia-manifold        "4.0.0"

@@ -4,16 +4,16 @@
             [qbits.alia.codec.default :as codec.default]))
 
 (defn prepare-statements
-  [connection statements]
+  [session statements]
   (reduce-kv (fn [ret k v]
-               (assoc ret k (alia/prepare connection v)))
+               (assoc ret k (alia/prepare session v)))
              {}
              statements))
 
 (defn prepare-encoders
-  [connection udts]
+  [session udts]
   (reduce-kv (fn [ret k v]
-               (assoc ret k (alia.udt/encoder connection
+               (assoc ret k (alia.udt/encoder session
                                               (:name v)
                                               (or (:codec v) codec.default/codec))))
              {}
@@ -41,6 +41,10 @@
      {:session      session
       :statements   (prepare-statements session (apply merge statements))
       :udt-encoders (prepare-encoders session (apply merge udts))})))
+
+(defn disconnect
+  [connection]
+  (alia/shutdown (:session connection)))
 
 (defn execute
   ([connection query]
