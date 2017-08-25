@@ -1,1 +1,0 @@
-CREATE KEYSPACE sandbox with replication = {'class':'SimpleStrategy', 'replication_factor':3};

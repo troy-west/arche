@@ -7,7 +7,7 @@
   (let [alias (name (:name key))]
     (if (.contains alias "-")
       (format ":\"%s\"" alias)
-      alias)))
+      (format ":%s" alias))))
 
 (defn resolve-identifier
   [key]
