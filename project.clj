@@ -34,8 +34,6 @@
                         com.troy-west/arche-async     :version
                         com.troy-west/arche-manifold  :version}}
 
-  :test-selectors {:default (complement :integration)}
-
   :release-tasks [["vcs" "assert-committed"]
                   ["change" "version" "leiningen.release/bump-version" "release"]
                   ["modules" "change" "version" "leiningen.release/bump-version" "release"]
