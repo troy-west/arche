@@ -62,12 +62,14 @@
 (s/fdef troy-west.arche/execute-async
         :args ::execute-args)
 
-(stest/instrument '[troy-west.arche/prepare-statements
-                    troy-west.arche/prepare-encoders
-                    troy-west.arche/statement
-                    troy-west.arche/udt-encoder
-                    troy-west.arche/encode-udt
-                    troy-west.arche/connect
-                    troy-west.arche/disconnect
-                    troy-west.arche/execute
-                    troy-west.arche/execute-async])
+(defn instrument!
+  []
+  (stest/instrument '[troy-west.arche/prepare-statements
+                      troy-west.arche/prepare-encoders
+                      troy-west.arche/statement
+                      troy-west.arche/udt-encoder
+                      troy-west.arche/encode-udt
+                      troy-west.arche/connect
+                      troy-west.arche/disconnect
+                      troy-west.arche/execute
+                      troy-west.arche/execute-async]))
