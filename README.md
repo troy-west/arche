@@ -113,14 +113,14 @@ Note the quoted identifier for asset-basket in test/insert-trade and test/select
 
 ;; in this particular schema the asset is a UDT, more on udt encoders below.
 (let [encoded-udt (arche/encode-udt connection
-                                    :arche/asset
+                                    :test/asset
                                     {:code     "PB"
                                      :currency "GBP"
                                      :notional "12"})]
   (arche/execute connection 
                  :test/insert-trade 
                  {:values {:id           "some-id"
-                           :asset-basket {"pork-bellies" encoded-udt}}}})
+                           :asset-basket {"pork-bellies" encoded-udt}}}}) ;; writing hyphenated keys
 
   (arche/execute connection
                  :test/select-trade
