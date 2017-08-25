@@ -129,7 +129,7 @@ Note the quoted identifier for asset-basket in test/insert-trade and test/select
 => [{:id           "some-id"
      :asset-basket {"long" {:code     "PB" ;; reading hyphenated keys
                             :currency "GBP"
-                                    :notional "12"}}}]
+                            :notional "12"}}}]
 ```
 
 For convenience, a tagged literal is provided that translates file/resource paths to statements maps, e.g:
