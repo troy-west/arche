@@ -16,7 +16,7 @@
 (defrecord ConnectionComponent [config session statements udt-encoders cluster]
   component/Lifecycle
   (start [this]
-    (let [{:keys [session statements udt-encoders]} (arche/connect cluster config)]
+    (let [{:keys [session statements udt-encoders]} (arche/connect (:cluster cluster) config)]
       (assoc this :session session
                   :statements statements
                   :udt-encoders udt-encoders)))

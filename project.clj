@@ -19,6 +19,7 @@
   :profiles {:dev {:resource-paths ["test-resources"]
                    :dependencies   [[com.smxemail/ccm-clj "1.1.0"]
                                     [ch.qos.logback/logback-classic "1.1.8"]]}}
+
   :modules {:inherited {:dependencies        [[org.clojure/clojure "_"]
                                               [cc.qbits/alia "_"]]
                         :resource-paths      ["test-resources"]
