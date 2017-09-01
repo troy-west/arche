@@ -27,3 +27,11 @@
              nil
              {:udt-1 {}
               :udt-2 {}})))))
+
+(deftest statement
+
+  (is (= "a cql string"
+         (arche/statement "a cql string" {})))
+
+  (is (= "a prepared statement"
+         (arche/statement :key {:statements {:key "a prepared statement"}}))))
