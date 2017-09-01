@@ -1,7 +1,18 @@
 (ns troy-west.arche
+  (:refer-clojure :exclude [resolve])
   (:require [qbits.alia :as alia]
             [qbits.alia.udt :as alia.udt]
-            [qbits.alia.codec.default :as codec.default]))
+            [qbits.alia.codec.default :as codec.default])
+  (:import (clojure.lang Keyword)))
+
+(defprotocol StatementResolver
+  (statement [this state]))
+
+(extend-protocol StatementResolver
+  Object
+  (statement [this state] this)
+  Keyword
+  (statement [this state] (get-in state [:statements this])))
 
 (defn prepare-statements
   [session statements]
@@ -19,10 +30,6 @@
              {}
              udts))
 
-(defn statement
-  [connection key]
-  (get-in connection [:statements key]))
-
 (defn udt-encoder
   [connection key]
   (get-in connection [:udt-encoders key]))
@@ -34,7 +41,7 @@
 
 (defn connect
   ([cluster]
-    (connect cluster nil))
+   (connect cluster nil))
   ([cluster {:keys [keyspace statements udts]}]
    (let [session (if keyspace (alia/connect cluster keyspace)
                               (alia/connect cluster))]
@@ -46,18 +53,21 @@
   [connection]
   (alia/shutdown (:session connection)))
 
+(defn execute*
+  ([f connection query]
+   (f (:session connection) (statement connection query)))
+  ([f connection query opts]
+   (f (:session connection) (statement connection query) opts)))
+
 (defn execute
   ([connection query]
-   (execute connection query nil))
+   (execute* alia/execute connection query))
   ([connection query opts]
-   (alia/execute (:session connection)
-                 (or (statement connection query) query)
-                 opts)))
+   (execute* alia/execute connection query opts)))
 
 (defn execute-async
   ([connection query]
-   (execute connection query nil))
+   (execute* alia/execute-async connection query))
   ([connection query opts]
-   (alia/execute-async (:session connection)
-                       (or (statement connection query) query)
-                       opts)))
+   (execute* alia/execute-async connection query opts)))
+

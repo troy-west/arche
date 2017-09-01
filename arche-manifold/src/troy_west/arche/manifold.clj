@@ -4,16 +4,12 @@
 
 (defn execute
   ([connection query]
-   (execute connection query nil))
+   (arche/execute* manifold/execute connection query))
   ([connection query opts]
-   (manifold/execute (:session connection)
-                     (or (arche/statement connection query) query)
-                     opts)))
+   (arche/execute* manifold/execute connection query opts)))
 
-(defn execute-buffered
+(defn execute
   ([connection query]
-   (execute connection query nil))
+   (arche/execute* manifold/execute-buffered connection query))
   ([connection query opts]
-   (manifold/execute-buffered (:session connection)
-                              (or (arche/statement connection query) query)
-                              opts)))
+   (arche/execute* manifold/execute-buffered connection query opts)))

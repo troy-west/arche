@@ -1,19 +1,15 @@
 (ns troy-west.arche.async
   (:require [troy-west.arche :as arche]
-            [qbits.alia.async :as async]))
+            [qbits.alia.async :as alia.async]))
 
 (defn execute-chan
   ([connection query]
-   (execute-chan connection query nil))
+   (arche/execute* alia.async/execute-chan connection query))
   ([connection query opts]
-   (async/execute-chan (:session connection)
-                       (or (arche/statement connection query) query)
-                       opts)))
+   (arche/execute* alia.async/execute-chan connection query opts)))
 
 (defn execute-chan-buffered
   ([connection query]
-   (execute-chan-buffered connection query nil))
+   (arche/execute* alia.async/execute-chan-buffered connection query))
   ([connection query opts]
-   (async/execute-chan-buffered (:session connection)
-                                (or (arche/statement connection query) query)
-                                opts)))
+   (arche/execute* alia.async/execute-chan-buffered connection query opts)))
