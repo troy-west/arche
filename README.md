@@ -29,8 +29,6 @@ Arche provides state management for Cassandra via [Alia](https://github.com/mpen
 
   Externalise CQL definition and execution options in file/resource. Automatic hyphen/underscore translation.
   
-Parse CQL statements from file or resource in HugsSQL format, provides automatic hyphen/underscore translation.
-
 * [com.troy-west.arche/arche-integrant](https://github.com/troy-west/arche/tree/master/arche-integrant)
 
   [![Clojars Project](https://img.shields.io/clojars/v/com.troy-west/arche-integrant.svg)](https://clojars.org/com.troy-west/arche-integrant)
