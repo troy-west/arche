@@ -8,13 +8,20 @@
 
   (is (= {} (arche/prepare-statements nil nil)))
 
-  (is (= {:query-1 "prepared: a-query"
-          :query-2 "prepared: b-query"}
-         (with-redefs [alia/prepare (fn [_ query] (format "prepared: %s" query))]
+  (is (= {:query-1 {:cql      "a-query"
+                    :prepared "prepared: a-query"}
+          :query-2 {:cql      "b-query"
+                    :prepared "prepared: b-query"}
+          :query-3 {:cql      "c-query"
+                    :prepared "prepared: c-query"
+                    :opts     {:fetch-size 5000}}}
+         (with-redefs [alia/prepare (fn [_ cql] (format "prepared: %s" cql))]
            (arche/prepare-statements
              nil
              {:query-1 "a-query"
-              :query-2 "b-query"})))))
+              :query-2 {:cql "b-query"}
+              :query-3 {:cql  "c-query"
+                        :opts {:fetch-size 5000}}})))))
 
 (deftest prepare-encoders
 
@@ -27,11 +34,3 @@
              nil
              {:udt-1 {}
               :udt-2 {}})))))
-
-(deftest statement
-
-  (is (= "a cql string"
-         (arche/statement "a cql string" {})))
-
-  (is (= "a prepared statement"
-         (arche/statement :key {:statements {:key "a prepared statement"}}))))

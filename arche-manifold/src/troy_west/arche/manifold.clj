@@ -3,13 +3,13 @@
             [qbits.alia.manifold :as manifold]))
 
 (defn execute
-  ([connection query]
-   (arche/execute* manifold/execute connection query))
-  ([connection query opts]
-   (arche/execute* manifold/execute connection query opts)))
+  ([connection key]
+   (arche/execute* manifold/execute connection key))
+  ([connection key opts]
+   (arche/execute* manifold/execute connection key opts)))
 
 (defn execute
-  ([connection query]
-   (arche/execute* manifold/execute-buffered connection query))
-  ([connection query opts]
-   (arche/execute* manifold/execute-buffered connection query opts)))
+  ([connection key]
+   (arche/execute* manifold/execute-buffered connection key))
+  ([connection key opts]
+   (arche/execute* manifold/execute-buffered connection key opts)))

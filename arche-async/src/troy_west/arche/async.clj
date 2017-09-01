@@ -3,13 +3,13 @@
             [qbits.alia.async :as alia.async]))
 
 (defn execute-chan
-  ([connection query]
-   (arche/execute* alia.async/execute-chan connection query))
-  ([connection query opts]
-   (arche/execute* alia.async/execute-chan connection query opts)))
+  ([connection key]
+   (arche/execute* alia.async/execute-chan connection key))
+  ([connection key opts]
+   (arche/execute* alia.async/execute-chan connection key opts)))
 
 (defn execute-chan-buffered
-  ([connection query]
-   (arche/execute* alia.async/execute-chan-buffered connection query))
-  ([connection query opts]
-   (arche/execute* alia.async/execute-chan-buffered connection query opts)))
+  ([connection key]
+   (arche/execute* alia.async/execute-chan-buffered connection key))
+  ([connection key opts]
+   (arche/execute* alia.async/execute-chan-buffered connection key opts)))
