@@ -78,7 +78,7 @@ CREATE TABLE client (
     PRIMARY KEY (id));
 ```
 
-### Externalise CQL Statements in HugsCQL files/resources
+### Externalise CQL Statements in HugCQL files/resources
 
 [Arche-HugCQL](https://github.com/troy-west/arche/tree/master/arche-hugcql) makes use of [HugSQL](https://www.hugsql.org/) to parse CQL statements externalised in files or resources. 
 
