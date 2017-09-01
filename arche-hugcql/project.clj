@@ -1,4 +1,4 @@
-(defproject com.troy-west/arche-hugcql "0.2.0"
+(defproject com.troy-west/arche-hugcql "0.2.1-SNAPSHOT"
   :description "Arche hugsql adaptor."
 
   :plugins [[lein-modules "0.3.11"]]

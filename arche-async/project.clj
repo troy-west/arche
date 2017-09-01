@@ -1,4 +1,4 @@
-(defproject com.troy-west/arche-async "0.2.0"
+(defproject com.troy-west/arche-async "0.2.1-SNAPSHOT"
   :description "Arche: Cassandra Clojure Cluster and Session Management with Alia"
   :url "http://www.troy-west.com/arche"
   :license {:name "Eclipse Public License"

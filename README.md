@@ -1,4 +1,4 @@
-# Arche: A Clojure Battery Pack for Cassandra and Alia
+# Arche: A Clojure Battery Pack for Alia/Cassandra
 
 > [Arche](https://en.wikipedia.org/wiki/Arche_(mythology)): The ancient Greek muse of origins
 
