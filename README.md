@@ -215,16 +215,18 @@ Create an Ingrant System with HugCQL externalised CQL prepared statements.
     connection
     :arche/insert-trade
     {:values {:id           "trade-1"
-              :asset-basket {"long" (arche/encode connection
-                                                  ::asset
-                                                  {:code     "AB"
-                                                   :currency "GBP"
-                                                   :notional "12"})
-                             "short" (arche/encode connection 
-                                                   ::asset
-                                                   {:code     "ZX"
-                                                    :currency "AUD"
-                                                    :notional "98"})}}}))
+              :asset-basket {"long" (arche/encode-udt 
+                                       connection
+                                       :arche/asset
+                                       {:code     "AB"
+                                        :currency "GBP"
+                                        :notional "12"})
+                             "short" (arche/encode 
+                                        connection 
+                                        :arche/asset
+                                        {:code     "ZX"
+                                         :currency "AUD"
+                                         :notional "98"})}}}))
 ```
 
 ### DI/Lifecycle managemet via [Component](https://github.com/stuartsierra/component) 
