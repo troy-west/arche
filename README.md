@@ -13,7 +13,7 @@ Arche provides state management for Cassandra via [Alia](https://github.com/mpen
 * Query configuration by simple EDN map of key/cql or key/map (when configuring per-query opts)
 * Prepared statement execution by keyword, supports all Alia execution modes (vanilla, core.async, manifold)
 * User Defined Type (UDT) encoding by keyword
-* As much configuration from EDN as possible (tag literal support in some cases)
+* As much configuration from EDN as possible (see: tagged literals)
 
 ## Modules
 
