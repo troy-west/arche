@@ -2,16 +2,18 @@
 
 > [Arche](https://en.wikipedia.org/wiki/Arche_(mythology)): The ancient Greek muse of origins
 
+Arche provides state management for Cassandra via [Alia](https://github.com/mpenet/alia).
+
 ## Summary
 
-Arche provides:
-
-* DI/Lifecycle management of Cassandra state (cluster/session/statement/UDT) via [Integrant](https://github.com/weavejester/integrant) or [Component](https://github.com/stuartsierra/component)
-* Externalisation of prepared statement configuration via a CQL extension of [HugSQL](https://github.com/layerware/hugsql)
-* Seamless support for existing [Alia](https://github.com/mpenet/alia) execution
-* Execution of prepared statements by keyword
-* Encoding of UDT types by keyword
-* As much configuration from EDN as possible
+* Cassandra state management (Cluster / Session / Prepared Statements / Execution Options / User Defined Types)
+* Optional DI/lifecycle via via [Integrant](https://github.com/weavejester/integrant) or [Component](https://github.com/stuartsierra/component)
+* Externalisation of query configuration via an extension of [HugSQL](https://github.com/layerware/hugsql) to support CQL
+* Automatic hyphen/underscore translation with when using HugCQL
+* Supports query configuration by simple EDN map of key/cql key/map (when configuring per-query opts)
+* Prepared statement execution by keyword, supports all Alia execution modes (vanilla, core.async, manifold)
+* User Defined Type (UDT) encoding by keyword
+* As much configuration from EDN as possible (tag literal support in some cases)
 
 ## Modules
 
@@ -25,7 +27,11 @@ Arche provides:
 
   [![Clojars Project](https://img.shields.io/clojars/v/com.troy-west/arche-hugcql.svg)](https://clojars.org/com.troy-west/arche-hugcql)
 
-  Parse CQL statements from file or resource in HugsSQL format, provides automatic hyphen/underscore translation.
+  Support for externalising CQL configuration in a file/resource
+  Support for per-query --:options 
+  Automatic hyphen/underscore translation
+  
+Parse CQL statements from file or resource in HugsSQL format, provides automatic hyphen/underscore translation.
 
 * [com.troy-west.arche/arche-integrant](https://github.com/troy-west/arche/tree/master/arche-integrant)
 
@@ -78,7 +84,8 @@ CREATE TABLE client (
 
 [Arche-HugCQL](https://github.com/troy-west/arche/tree/master/arche-hugcql) makes use of [HugSQL](https://www.hugsql.org/) to parse CQL statements externalised in files or resources. 
 
-The --:name field is converted into (an optionally namespaced) keyword that identifies this statement for execution.
+--:name is converted into (an optionally namespaced) keyword that identifies this statement for execution.
+--:options is translated into EDN and applied as default execution configuration for this statement
 
 Hyphens in select columns and named parameters are automatically translated by the [quoted identifier technique](https://stackoverflow.com/questions/20243562/clojure-variable-names-for-database-column-names/33259288#33259288).
 
@@ -89,6 +96,7 @@ e.g. The following HugCQL file:
 INSERT INTO client (id, name) VALUES (:id, :name)
 
 --:name test/select-client
+--:options {:fetch-size 500}
 SELECT * FROM client WHERE id = :id
 
 --:name test/insert-trade
@@ -102,12 +110,13 @@ Translates to the following map of key -> statements:
 
 ```clojure
 {:test/insert-client "INSERT INTO client (id, name) VALUES (:id, :name)"
- :test/select-client "SELECT * FROM client WHERE id = :id"
+ :test/select-client {:cql  "SELECT * FROM client WHERE id = :id"
+                      :opts {:fetch-size 500}}
  :test/insert-trade  "INSERT INTO trade (id, asset_basket) VALUES (:id, :\"asset-basket\")"
  :test/select-trade  "SELECT id, asset_basket as \"asset-basket\" FROM trade where id = :id"}
 ```
 
-Note the quoted identifier for asset-basket in test/insert-trade and test/select-trade, this allows you insert and select maps of data with kebab-case keywords:
+The quoted identifier in test/insert-trade and test/select-trade allows insertion and selection of data with kebab-case keywords:
 
 ```clojure
 
@@ -138,7 +147,7 @@ For convenience, a tagged literal is provided that translates file/resource path
 #arche.hugcql/statements "stmts1.hcql"
 ```
 
-### Lifecycle without Integrant or Component
+### Vanilla State Management (no Component or Integrant)
 
 Create a cluster instance using alia.
 
@@ -154,7 +163,8 @@ Define some statements and UDT's.
 (def udts {:test/asset {:name "asset"}})
 
 (def statements {:test/insert-client "INSERT INTO client (id, name) VALUES (:id, :name)"
-                 :test/select-client "SELECT * FROM client WHERE id = :id"
+                 :test/select-client {:cql  "SELECT * FROM client WHERE id = :id"
+                                      :opts {:fetch-size 500}}
                  :test/insert-trade  "INSERT INTO trade (id, asset_basket) VALUES (:id, :\"asset-basket\")"
                  :test/select-trade  "SELECT id, asset_basket as \"asset-basket\" FROM trade where id = :id"})
 ```
@@ -164,15 +174,18 @@ Create an arche connection with the cluster and (optional) keyspace, statements,
 ``` clojure
 (require '[troy-west.arche :as arche])
 
-(def connection (arche/connect cluster {:keyspace "sandbox" :statements [statements] :udts [udts]}))
+(def connection (arche/connect cluster 
+                               {:keyspace "sandbox" 
+                                :statements statements
+                                :udts [udts]}))
 ```
 
 Using UDT encoders.
 
 ``` clojure
-(arche/encode-udt session :test/asset {:code     "AB"
-                                       :currency "GBP"
-                                       :notional "12"})
+(arche/encode-udt connection :test/asset {:code     "AB"
+                                          :currency "GBP"
+                                          :notional "12"})
 
 ;; creates UDTValue instance
 ;; #object[com.datastax.driver.core.UDTValue 0x29632e50 "{code:'AB',currency:'GBP',notional:'12'}"]
@@ -181,125 +194,74 @@ Using UDT encoders.
 Arche provides modules/functions that shadow all standard Alia execution, using an Arche connection rather than a Datastax session.  
 
 ``` clojure
-(arche/execute connection :test/insert-client {:values {:id "id-1" :name "Carol"}})
+(arche/execute connection 
+               :test/insert-client 
+               {:values {:id "id-1" :name "Carol"}})
 
-(arche.async/execute-chan connection :test/insert-client {:values {:id "id-1" :name "Carol"}})
+(arche.async/execute-chan connection 
+                          :test/insert-client 
+                          {:values {:id "id-1" :name "Carol"}})
 
-(arche.manifold/execute connection :test/insert-client {:values {:id "id-1" :name "Carol"}})
+(arche.manifold/execute connection 
+                        :test/insert-client 
+                        {:values {:id "id-1" :name "Carol"}})
 ```
 
 ### DI/Lifecycle management with [Integrant](https://github.com/weavejester/integrant) (recommended)
 
-Define the integrant cassandra configuration, can either be defined in a text file or in code.
-
-
-``` clojure
-(require '[integrant.core :as ig])
-(require '[troy-west.arche-integrant :as arche])
-
-(def cassandra-config
-  {[:arche/cluster :test/cluster]   {:contact-points ["127.0.0.1"] :port 19142}
-   [:arche/session :test/session]   {:keyspace   "sandbox"
-                                     :cluster    #ig/ref :test/cluster
-                                     :statements [#arche.hugcql/statements "stmts1.hcql"
-                                                  #arche.hugcql/statements "stmts2.hcql]
-                                     :udts       [{::asset {:name "asset"}}]}})
-```
-
-Start the cassandra component.
+Create an Ingrant System with HugCQL externalised CQL prepared statements.
 
 ``` clojure
-(def cassandra (ig/init cassandra-config))
-```
+(def system
+  (integrant/init 
+    {:arche/cluster {:contact-points   ["127.0.0.1"] 
+                     :port             19142}
+     :arche/connection {:keyspace   "sandbox"
+                        :cluster    (integrant/ref :arche/cluster)
+                        :statements #arche.hugcql/statements "cql/test.hcql"
+                        :udts       [{:arche/asset {:name "asset"}}]}}))
 
-Execute some prepared statements using alia.
+(def connection (:arche/connection system)
 
-``` clojure
-(require '[qbits.alia :as alia])
+(arche/execute connection 
+               :arche/insert-client
+               {:values {:id "id-1" :name "Carol"}})
 
-(let [session (arche/session cassandra :test/session-1)]
-  (alia/execute session :arche/insert-client {:values {:id "id-1" :name "Carol"}})
-  (alia/execute session :arche/select-client {:values {:id "id-1"}})
-  (alia/execute session :arche/insert-trade
-    {:values {:id "trade-1"
-              :asset-basket {"long" (arche/encode session
+(arche.async/execute-chan connection 
+                          :arche/select-client 
+                          {:values {:id "id-1"}})
+
+(arche.manifold/execute 
+    connection
+    :arche/insert-trade
+    {:values {:id           "trade-1"
+              :asset-basket {"long" (arche/encode connection
                                                   ::asset
                                                   {:code     "AB"
                                                    :currency "GBP"
                                                    :notional "12"})
-                             "short" (arche/encode session
+                             "short" (arche/encode connection 
                                                    ::asset
                                                    {:code     "ZX"
                                                     :currency "AUD"
                                                     :notional "98"})}}}))
 ```
 
-### [Component](https://github.com/stuartsierra/component) DI/Lifecycle Management
-
-Create prepared statements cql in `prepared/test.cql`
-
-``` text
---:name arche/insert-client
-INSERT INTO client (id, name) VALUES (:id, :name)
-
---:name arche/select-client
-SELECT * FROM client WHERE id = :id
-
---:name arche/insert-trade
-INSERT INTO trade (id, asset_basket) VALUES (:id, :asset-basket)
-
---:name arche/select-trade
-SELECT id, :i:asset-basket FROM trade where id = :id
-```
-
-Define the Component cassandra configuration, can either be defined in a text file or in code.
-
-Note: the data reader tags #arche/statements, #arche/cluster and #arche/session are made avalible by the `arche-component` library to make it possible to declaratively define the Component configuration as EDN data. Alternatively there are functions to achieve the same, `create-statements`, `create-cluster` and `create-session`. There will create arche Component Records.
+### DI/Lifecycle managemet via [Component](https://github.com/stuartsierra/component) 
 
 ``` clojure
-(require '[com.stuartsierra.component :as component])
-(require '[troy-west.arche-component :as arche])
+(def system
+  (component/start-system
+    {:cluster    #arche/cluster{:contact-points ["127.0.0.1"]
+                                :port       19142}
+     :connection #arche/connection{:keyspace   "sandbox"
+                                   :statements [#arche.hugcql/statements "cql/test1.hcql"
+                                                #arche.hugcql/statements "cql/test2.hcql"]
+                                   :udts       [{:arche/asset {:name "asset"}}]
+                                   :cluster    :cluster}}))
 
-(def cassandra-config
-  {:test/statements-1 #arche/statements["prepared/test.cql"]
-   :test/udts-1       {::asset {:name "asset"}}
-   :test/cluster-1    #arche/cluster{:contact-points ["127.0.0.1"] :port 19142}
-   :test/session-1    #arche/session{:keyspace   "sandbox"
-                                     :cluster    :test/cluster-1
-                                     :statements :test/statements-1
-                                     :udts       :test/udts-1}})
+(def connection (:connection system)
 ```
-
-Start the cassandra component.
-
-``` clojure
-(def cassandra (component/start (component/map->SystemMap cassandra-config)))
-```
-
-Execute some prepared statements using alia.
-
-``` clojure
-(require '[qbits.alia :as alia])
-
-(let [session (arche/session cassandra :test/session-1)]
-  (alia/execute session :arche/insert-client {:values {:id "id-1" :name "Carol"}})
-  (alia/execute session :arche/select-client {:values {:id "id-1"}})
-  (alia/execute session :arche/insert-trade
-    {:values {:id "trade-1"
-              :asset-basket {"long" (arche/encode session
-                                                  ::asset
-                                                  {:code     "AB"
-                                                   :currency "GBP"
-                                                   :notional "12"})
-                             "short" (arche/encode session
-                                                   ::asset
-                                                   {:code     "ZX"
-                                                    :currency "AUD"
-                                                    :notional "98"})}}}))
-```
-
-## TODO
-Add tests
 
 ## License
 
