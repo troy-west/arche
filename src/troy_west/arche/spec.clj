@@ -14,7 +14,8 @@
 (s/def :udt/codec any?)
 (s/def ::udt (s/keys :req-un [:udt/name] :opt-un [:udt/codec]))
 (s/def ::udts (s/map-of keyword? ::udt))
-(s/def :connect/statements (s/coll-of ::statements))
+(s/def :connect/statements (s/or :statements ::statements
+                                 :statements (s/coll-of ::statements)))
 (s/def :connect/udts (s/coll-of ::udts))
 (s/def ::keyspace string?)
 (s/def ::query any?)
@@ -35,14 +36,6 @@
         :args (s/cat :session ::session
                      :udts (s/or :nil nil?
                                  :udts ::udts)))
-
-(s/fdef troy-west.arche/statement
-        :args (s/cat :connection ::connection
-                     :key any?))
-
-(s/fdef troy-west.arche/udt-encoder
-        :args (s/cat :connection ::connection
-                     :key any?))
 
 (s/fdef troy-west.arche/encode-udt
         :args (s/cat :connection ::connection

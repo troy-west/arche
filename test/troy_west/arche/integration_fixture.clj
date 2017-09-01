@@ -30,7 +30,7 @@
   (let [hand-cluster     (alia/cluster {:contact-points ["127.0.0.1"]
                                         :port           19142})
         hand-connection  (arche/connect hand-cluster {:keyspace   "sandbox"
-                                                      :statements statements
+                                                      :statements #arche.hugcql/statements "cql/test.hcql"
                                                       :udts       udts})
 
         component-system (component/start-system
