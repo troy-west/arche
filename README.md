@@ -6,11 +6,11 @@ Arche provides state management for Cassandra via [Alia](https://github.com/mpen
 
 ## Summary
 
-* Cassandra state management (Cluster / Session / Prepared Statements / Execution Options / User Defined Types)
-* Optional DI/lifecycle via via [Integrant](https://github.com/weavejester/integrant) or [Component](https://github.com/stuartsierra/component)
-* Externalisation of query configuration via an extension of [HugSQL](https://github.com/layerware/hugsql) to support CQL
+* Cassandra state management (Cluster / Session / Prepared Statements / Execution Options / UDTs)
+* Optional DI/lifecycle via [Integrant](https://github.com/weavejester/integrant) or [Component](https://github.com/stuartsierra/component)
+* Externalisation of query definitions via an extension of [HugSQL](https://github.com/layerware/hugsql) to support CQL
 * Automatic hyphen/underscore translation with when using HugCQL
-* Supports query configuration by simple EDN map of key/cql key/map (when configuring per-query opts)
+* Query configuration by simple EDN map of key/cql or key/map (when configuring per-query opts)
 * Prepared statement execution by keyword, supports all Alia execution modes (vanilla, core.async, manifold)
 * User Defined Type (UDT) encoding by keyword
 * As much configuration from EDN as possible (tag literal support in some cases)
@@ -27,9 +27,7 @@ Arche provides state management for Cassandra via [Alia](https://github.com/mpen
 
   [![Clojars Project](https://img.shields.io/clojars/v/com.troy-west/arche-hugcql.svg)](https://clojars.org/com.troy-west/arche-hugcql)
 
-  Support for externalising CQL configuration in a file/resource
-  Support for per-query --:options 
-  Automatic hyphen/underscore translation
+  Externalise CQL definition and execution options in file/resource. Automatic hyphen/underscore translation.
   
 Parse CQL statements from file or resource in HugsSQL format, provides automatic hyphen/underscore translation.
 
@@ -63,6 +61,8 @@ Parse CQL statements from file or resource in HugsSQL format, provides automatic
 
 Define your schema (optionally, automate test cluster management with [CCM-CLJ](https://github.com/SMX-LTD/ccm-clj))
 
+The tests and examples included with this project use the following:
+
 ```cql
 CREATE TYPE asset (
     code     text,
@@ -84,8 +84,8 @@ CREATE TABLE client (
 
 [Arche-HugCQL](https://github.com/troy-west/arche/tree/master/arche-hugcql) makes use of [HugSQL](https://www.hugsql.org/) to parse CQL statements externalised in files or resources. 
 
---:name is converted into (an optionally namespaced) keyword that identifies this statement for execution.
---:options is translated into EDN and applied as default execution configuration for this statement
+* --:name is converted into (an optionally namespaced) keyword that identifies this statement for execution.
+* --:options is translated into EDN and applied as default execution configuration for this statement
 
 Hyphens in select columns and named parameters are automatically translated by the [quoted identifier technique](https://stackoverflow.com/questions/20243562/clojure-variable-names-for-database-column-names/33259288#33259288).
 
@@ -116,7 +116,7 @@ Translates to the following map of key -> statements:
  :test/select-trade  "SELECT id, asset_basket as \"asset-basket\" FROM trade where id = :id"}
 ```
 
-The quoted identifier in test/insert-trade and test/select-trade allows insertion and selection of data with kebab-case keywords:
+After a connection is created with those statement, they can be executed by their keyword identifier
 
 ```clojure
 
@@ -191,7 +191,7 @@ Using UDT encoders.
 ;; #object[com.datastax.driver.core.UDTValue 0x29632e50 "{code:'AB',currency:'GBP',notional:'12'}"]
 ```
 
-Arche provides modules/functions that shadow all standard Alia execution, using an Arche connection rather than a Datastax session.  
+Arche provides modules/functions that shadow all standard Alia execution, in modules that similarly shadow Alia. 
 
 ``` clojure
 (arche/execute connection 
