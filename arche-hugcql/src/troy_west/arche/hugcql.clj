@@ -1,6 +1,8 @@
 (ns troy-west.arche.hugcql
   (:refer-clojure :exclude [load])
-  (:require [hugsql.core :as hugsql]))
+  (:require [hugsql.core :as hugsql]
+            [clojure.string :as str]
+            [clojure.edn :as edn]))
 
 (defn resolve-value
   [key]
@@ -29,6 +31,16 @@
   [hdr]
   (keyword (first (:name hdr))))
 
+(defn statement-options
+  [hdr]
+  (when-let [opts-parts (:options hdr)]
+    (try
+      ;; TODO: someone remind me why I can't just do this?
+      (edn/read-string (str/join " " opts-parts))
+      (catch Exception ex
+        ;; naughty!
+        ))))
+
 (defn statement-cql
   [sql-keys]
   (apply str (map resolve-key sql-keys)))
@@ -36,7 +48,10 @@
 (defn statements
   [pdefs]
   (->> (for [{:keys [hdr sql] :as pdef} pdefs]
-         [(statement-key hdr) (statement-cql sql)])
+         [(statement-key hdr) (if-let [opts (statement-options hdr)]
+                                {:cql  (statement-cql sql)
+                                 :opts opts}
+                                (statement-cql sql))])
        (into {})))
 
 (defn parse

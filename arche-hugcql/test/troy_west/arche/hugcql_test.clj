@@ -48,7 +48,8 @@
 (deftest load-statements
 
   (is (= {:arche/insert-client "INSERT INTO client (id, name) VALUES (:id, :name)"
-          :arche/select-client "SELECT * FROM client WHERE id = :id"
+          :arche/select-client {:cql "SELECT * FROM client WHERE id = :id"
+                                :opts {:fetch-size 500}}
           :arche/insert-trade  "INSERT INTO trade (id, asset_basket) VALUES (:id, :\"asset-basket\")"
           :arche/select-trade  "SELECT id, asset_basket as \"asset-basket\" FROM trade where id = :id"}
          (hugcql/load "cql/test.hcql"))))
@@ -56,7 +57,8 @@
 (deftest reader-literals
 
   (is (= {:arche/insert-client "INSERT INTO client (id, name) VALUES (:id, :name)"
-          :arche/select-client "SELECT * FROM client WHERE id = :id"
+          :arche/select-client {:cql "SELECT * FROM client WHERE id = :id"
+                                :opts {:fetch-size 500}}
           :arche/insert-trade  "INSERT INTO trade (id, asset_basket) VALUES (:id, :\"asset-basket\")"
           :arche/select-trade  "SELECT id, asset_basket as \"asset-basket\" FROM trade where id = :id"}
          #arche.hugcql/statements "cql/test.hcql")))
