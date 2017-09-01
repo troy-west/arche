@@ -5,21 +5,17 @@
             [qbits.alia.codec.default :as codec.default])
   (:import (clojure.lang Keyword)))
 
-(defprotocol StatementResolver
-  (statement [this state]))
-
-(extend-protocol StatementResolver
-  Object
-  (statement [this state] this)
-  Keyword
-  (statement [this state] (get-in state [:statements this])))
-
 (defn prepare-statements
-  [session statements]
+  [session config]
   (reduce-kv (fn [ret k v]
-               (assoc ret k (alia/prepare session v)))
+               (let [cql      (or (:cql v) v)
+                     opts     (:opts v)
+                     prepared (alia/prepare session cql)]
+                 (assoc ret k (cond-> {:cql      cql
+                                       :prepared prepared}
+                                      opts (assoc :opts opts)))))
              {}
-             statements))
+             config))
 
 (defn prepare-encoders
   [session udts]
@@ -29,15 +25,6 @@
                                               (or (:codec v) codec.default/codec))))
              {}
              udts))
-
-(defn udt-encoder
-  [connection key]
-  (get-in connection [:udt-encoders key]))
-
-(defn encode-udt
-  [connection key value]
-  (let [encoder (udt-encoder connection key)]
-    (encoder value)))
 
 (defn connect
   ([cluster]
@@ -53,21 +40,35 @@
   [connection]
   (alia/shutdown (:session connection)))
 
+(defn encode-udt
+  [connection key value]
+  (let [encoder (get-in connection [:udt-encoders key])]
+    (encoder value)))
+
+(defn options
+  [connection key opts]
+  (or (some-> (get-in connection [:statements key :opts])
+              (merge opts))
+      opts))
+
 (defn execute*
-  ([f connection query]
-   (f (:session connection) (statement connection query)))
-  ([f connection query opts]
-   (f (:session connection) (statement connection query) opts)))
+  ([f connection key]
+   (f (:session connection)
+      (get-in connection [:statements key :prepared])))
+  ([f connection key opts]
+   (f (:session connection)
+      (get-in connection [:statements key :prepared])
+      (options connection key opts))))
 
 (defn execute
-  ([connection query]
-   (execute* alia/execute connection query))
-  ([connection query opts]
-   (execute* alia/execute connection query opts)))
+  ([connection key]
+   (execute* alia/execute connection key))
+  ([connection key opts]
+   (execute* alia/execute connection key opts)))
 
 (defn execute-async
-  ([connection query]
-   (execute* alia/execute-async connection query))
-  ([connection query opts]
-   (execute* alia/execute-async connection query opts)))
+  ([connection key]
+   (execute* alia/execute-async connection key))
+  ([connection key opts]
+   (execute* alia/execute-async connection key opts)))
 
