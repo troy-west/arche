@@ -2,6 +2,7 @@
 INSERT INTO client (id, name) VALUES (:id, :name)
 
 --:name arche/select-client
+--:options {:fetch-size 500}
 SELECT * FROM client WHERE id = :id
 
 --:name arche/insert-trade
