@@ -34,3 +34,79 @@
              nil
              {:udt-1 {}
               :udt-2 {}})))))
+
+(deftest options
+
+  (is (= nil
+         (arche/options {} ::select nil)))
+
+  (is (= {:fetch-size 10}
+         (arche/options {} ::select {:fetch-size 10})))
+
+  (is (= {:fetch-size 10}
+         (arche/options {:statements {::select {:opts {:fetch-size 20}}}} ::select {:fetch-size 10})))
+
+  (is (= {:fetch-size 20}
+         (arche/options {:statements {::select {:opts {:fetch-size 20}}}} ::select nil)))
+
+  (is (= {:fetch-size 20
+          :channel    "chan"}
+         (arche/options {:statements {::select {:opts {:fetch-size 20}}}} ::select {:channel "chan"}))))
+
+
+(deftest execute*
+
+  (let [statement (atom nil)
+        options   (atom nil)
+        f         (fn capture
+                    ([_ statement*]
+                     (capture _ statement* nil))
+                    ([_ statement* options*]
+                     (reset! statement statement*)
+                     (reset! options options*)))]
+
+    (is (= [nil nil]
+           (do (arche/execute* f
+                               {}
+                               ::select)
+               [@statement @options])))
+
+    (is (= ["prepared" nil]
+           (do (arche/execute* f
+                               {:statements {::select {:prepared "prepared"}}}
+                               ::select)
+               [@statement @options])))
+
+    (is (= ["prepared" {:fetch-size 10}]
+           (do (arche/execute* f {:statements {::select {:prepared "prepared"}}}
+                               ::select
+                               {:fetch-size 10})
+               [@statement @options])))
+
+    (is (= ["prepared" {:fetch-size 10}]
+           (do (arche/execute* f {:statements {::select {:prepared "prepared"
+                                                         :opts     {:fetch-size 5000}}}}
+                               ::select
+                               {:fetch-size 10})
+               [@statement @options])))
+
+    (is (= ["prepared" {:fetch-size 5000}]
+           (do (arche/execute* f {:statements {::select {:prepared "prepared"
+                                                         :opts     {:fetch-size 5000}}}}
+                               ::select)
+               [@statement @options])))
+
+    (is (= ["prepared" {:fetch-size 5000}]
+           (do (arche/execute* f {:statements {::select {:prepared "prepared"
+                                                         :opts     {:fetch-size 5000}}}}
+                               ::select
+                               nil)
+               [@statement @options])))
+
+    (is (= ["prepared" {:fetch-size 5000
+                        :channel    "chan"}]
+           (do (arche/execute* f {:statements {::select {:prepared "prepared"
+                                                         :opts     {:fetch-size 5000}}}}
+                               ::select
+                               {:channel "chan"})
+               [@statement @options])))))
