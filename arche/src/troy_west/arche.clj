@@ -33,7 +33,9 @@
    (let [session (if keyspace (alia/connect cluster keyspace)
                               (alia/connect cluster))]
      {:session      session
-      :statements   (prepare-statements session (apply merge statements))
+      :statements   (prepare-statements session (if (map? statements)
+                                                  statements
+                                                  (apply merge statements)))
       :udt-encoders (prepare-encoders session (apply merge udts))})))
 
 (defn disconnect

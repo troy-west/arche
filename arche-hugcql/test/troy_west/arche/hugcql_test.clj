@@ -51,7 +51,7 @@
           :arche/select-client "SELECT * FROM client WHERE id = :id"
           :arche/insert-trade  "INSERT INTO trade (id, asset_basket) VALUES (:id, :\"asset-basket\")"
           :arche/select-trade  "SELECT id, asset_basket as \"asset-basket\" FROM trade where id = :id"}
-         (hugcql/load "prepared/test.hcql"))))
+         (hugcql/load "cql/test.hcql"))))
 
 (deftest reader-literals
 
@@ -59,4 +59,4 @@
           :arche/select-client "SELECT * FROM client WHERE id = :id"
           :arche/insert-trade  "INSERT INTO trade (id, asset_basket) VALUES (:id, :\"asset-basket\")"
           :arche/select-trade  "SELECT id, asset_basket as \"asset-basket\" FROM trade where id = :id"}
-         #arche.hugcql/statements "prepared/test.hcql")))
+         #arche.hugcql/statements "cql/test.hcql")))
