@@ -53,7 +53,7 @@ Parse CQL statements from file or resource in HugsSQL format, provides automatic
 
   [![Clojars Project](https://img.shields.io/clojars/v/com.troy-west/arche-manifold.svg)](https://clojars.org/com.troy-west/arche-manifold)
 
-  Manifold statement execution (shadows alia.async)
+  Manifold statement execution (shadows alia.manifold)
 
 ## Usage
 
