@@ -120,23 +120,12 @@ After a connection is created with those statement, they can be executed by thei
 
 ```clojure
 
-;; in this particular schema the asset is a UDT, more on udt encoders below.
-(let [encoded-udt (arche/encode-udt connection
-                                    :test/asset
-                                    {:code     "PB"
-                                     :currency "GBP"
-                                     :notional "12"})]
-  (arche/execute connection 
-                 :test/insert-trade 
-                 {:values {:id           "some-id"
-                           :asset-basket {"long" encoded-udt}}}}) ;; writing hyphenated keys
-
-  (arche/execute connection
-                 :test/select-trade
-                 {:values {:id "id"}}))
+(arche/execute connection
+               :test/select-trade
+               {:values {:id "id"}}))
 
 => [{:id           "some-id"
-     :asset-basket {"long" {:code     "PB" ;; reading hyphenated keys
+     :asset-basket {"long" {:code     "PB" ;; automatic underscore / hyphen translation of columns / keys
                             :currency "GBP"
                             :notional "12"}}}]
 ```
