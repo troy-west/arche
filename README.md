@@ -116,7 +116,7 @@ Translates to the following map of key -> statements:
  :test/select-trade  "SELECT id, asset_basket as \"asset-basket\" FROM trade where id = :id"}
 ```
 
-After a connection is created with those statement, they can be executed by their keyword identifier
+After creating a connection, those statements can be executed by keyword
 
 ```clojure
 
