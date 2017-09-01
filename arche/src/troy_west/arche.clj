@@ -53,8 +53,7 @@
 
 (defn execute*
   ([f connection key]
-   (f (:session connection)
-      (get-in connection [:statements key :prepared])))
+   (execute* f connection key nil))
   ([f connection key opts]
    (f (:session connection)
       (get-in connection [:statements key :prepared])
