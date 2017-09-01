@@ -140,16 +140,8 @@ For convenience, a tagged literal is provided that translates file/resource path
 
 Create a cluster instance using alia.
 
-```clojure
-(require '[qbits.alia :as alia])
-
-(def cluster (alia/cluster {:contact-points ["127.0.0.1"] :port 19142}))
-```
-
-Define some statements and UDT's.
-
 ``` clojure
-(def udts {:test/asset {:name "asset"}})
+(def udts [{:test/asset {:name "asset"}}])
 
 (def statements {:test/insert-client "INSERT INTO client (id, name) VALUES (:id, :name)"
                  :test/select-client {:cql  "SELECT * FROM client WHERE id = :id"
@@ -163,10 +155,11 @@ Create an arche connection with the cluster and (optional) keyspace, statements,
 ``` clojure
 (require '[troy-west.arche :as arche])
 
-(def connection (arche/connect cluster 
-                               {:keyspace "sandbox" 
+(def connection (arche/connect (alia/cluster {:contact-points ["127.0.0.1"] 
+                                              :port 19142})
+                               {:keyspace   "sandbox" 
                                 :statements statements
-                                :udts [udts]}))
+                                :udts       [udts]}))
 ```
 
 Using UDT encoders.
