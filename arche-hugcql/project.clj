@@ -1,4 +1,4 @@
-(defproject com.troy-west/arche-hugcql "0.2.1-SNAPSHOT"
+(defproject com.troy-west/arche-hugcql "0.2.1"
   :description "Arche: HugCQL module"
 
   :license {:name "Eclipse Public License"
