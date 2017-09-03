@@ -21,7 +21,7 @@ Arche provides state management for Cassandra via [Alia](https://github.com/mpen
 
   [![Clojars Project](https://img.shields.io/clojars/v/com.troy-west/arche.svg)](https://clojars.org/com.troy-west/arche) [![CircleCI](https://circleci.com/gh/troy-west/arche.svg?style=svg)](https://circleci.com/gh/troy-west/arche)
 
-  Cassandra state management, statement preperation and execution, and UDT encoding.
+  Cassandra state management, statement preparation, UDT preparation, and execution,
 
 * [com.troy-west.arche/arche-hugcql](https://github.com/troy-west/arche/tree/master/arche-hugcql)
 
