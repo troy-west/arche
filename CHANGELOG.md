@@ -17,4 +17,4 @@ All notable changes to this project will be documented in this file. This change
 
 ### Added
 
-- Initial Release 
+- Initial Release

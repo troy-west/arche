@@ -21,7 +21,6 @@
 (spec/def :cassandra/keyspace string?)
 
 ;; State
-
 (spec/def :cassandra/cluster #(= (type %) Cluster))
 (spec/def :cassandra/session #(= (type %) SessionManager))
 
