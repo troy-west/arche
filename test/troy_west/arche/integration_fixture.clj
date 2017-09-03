@@ -8,8 +8,7 @@
             [qbits.alia :as alia]
             [ccm-clj.core :as ccm]
             [com.stuartsierra.component :as component]
-            [integrant.core :as integrant]
-            [integrant.core :as ig]))
+            [integrant.core :as integrant]))
 
 (defonce system (atom {}))
 
@@ -65,7 +64,7 @@
   (alia/shutdown (get-in @system ["hand-rolled" :cluster]))
 
   (component/stop-system (get-in @system ["component" :system]))
-  (ig/halt! (get-in @system ["integrant" :system]))
+  (integrant/halt! (get-in @system ["integrant" :system]))
 
   (ccm/stop!)
   (reset! system {}))

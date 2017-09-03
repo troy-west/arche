@@ -1,5 +1,5 @@
 (defproject com.troy-west/arche-all "0.2.1-SNAPSHOT"
-  :description "Arche: Cassandra Clojure Cluster and Session Management with Alia"
+  :description "Arche: A Clojure Battery Pack for Cassandra/Alia"
   :url "http://www.troy-west.com/arche"
   :license {:name "Eclipse Public License"
             :url  "http://www.eclipse.org/legal/epl-v10.html"}
