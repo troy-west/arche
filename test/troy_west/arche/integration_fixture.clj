@@ -22,8 +22,8 @@
   (ccm/auto-cluster! "arche"
                      "2.2.6"
                      3
-                     [#"test-resources/test-keyspace\.cql"]
-                     {"sandbox" [#"test-resources/test-tables\.cql"]}
+                     [#"test-resources/cql/test-keyspace\.cql"]
+                     {"sandbox" [#"test-resources/cql/test-tables\.cql"]}
                      19142)
 
   (let [hand-cluster     (alia/cluster {:contact-points ["127.0.0.1"]
