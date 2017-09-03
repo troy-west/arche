@@ -1,59 +1,80 @@
 (ns troy-west.arche.spec
   (:require [clojure.future :refer [any?]]
-            [clojure.spec.alpha :as s]
+            [clojure.spec.alpha :as spec]
             [clojure.spec.test.alpha :as spec.test]
-            [troy-west.arche :as arche]
-            [qbits.alia :as alia])
-  (:import (com.datastax.driver.core SessionManager Cluster)))
+            [troy-west.arche :as arche])
+  (:import (com.datastax.driver.core SessionManager Cluster PreparedStatement)))
 
-(s/def ::cluster #(= (type %) Cluster))
-(s/def ::connection any?)
-(s/def ::session #(= (type %) SessionManager))
-(s/def ::statements (s/map-of keyword? string?))
-(s/def :udt/name string?)
-(s/def :udt/codec any?)
-(s/def ::udt (s/keys :req-un [:udt/name] :opt-un [:udt/codec]))
-(s/def ::udts (s/map-of keyword? ::udt))
-(s/def :connect/statements (s/or :statements ::statements
-                                 :statements (s/coll-of ::statements)))
-(s/def :connect/udts (s/coll-of ::udts))
-(s/def ::keyspace string?)
-(s/def ::query any?)
-(s/def ::alia/execute-opts map?)
-(s/def ::execute-args (s/or :first (s/cat :connection ::connection
-                                          :query ::query)
-                            :second (s/cat :connection ::connection
-                                           :query ::query
-                                           :opts (s/or :nil nil?
-                                                       :opts ::alia/execute-opts))))
+;; Configuration
+(spec/def :arche.config.udt/name string?)
+(spec/def :arche.config.udt/codec any?)
+(spec/def :arche.config/udt (spec/keys :req-un [:arche.config.udt/name] :opt-un [:arche.config.udt/codec]))
+(spec/def :arche.config/udts (spec/or :udts (spec/map-of keyword? :arche.config/udt)
+                                      :udts (spec/coll-of (spec/map-of keyword? :arche.config/udt))))
 
-(s/fdef troy-west.arche/prepare-statements
-        :args (s/cat :session ::session
-                     :statements (s/or :nil nil?
-                                       :statements ::statements)))
+(spec/def :arche.config/statement (spec/or :statement :arche/cql
+                                           :statement (spec/keys :req-un [:arche/cql]
+                                                                 :opt-un [:alia.execute/opts])))
+(spec/def :arche.config/statements (spec/or :statements (spec/map-of keyword? :arche.config/statement)
+                                            :statements (spec/coll-of (spec/map-of keyword? :arche.config/statement))))
 
-(s/fdef troy-west.arche/prepare-encoders
-        :args (s/cat :session ::session
-                     :udts (s/or :nil nil?
-                                 :udts ::udts)))
+(spec/def :cassandra/keyspace string?)
 
-(s/fdef troy-west.arche/encode-udt
-        :args (s/cat :connection ::connection
-                     :key any?
-                     :value any?))
+;; State
 
-(s/fdef troy-west.arche/connect
-        :args (s/cat :cluster ::cluster
-                     :opts (s/? (s/keys :opt-un [::keyspace :connect/statements :connect/udts]))))
+(spec/def :cassandra/cluster #(= (type %) Cluster))
+(spec/def :cassandra/session #(= (type %) SessionManager))
 
-(s/fdef troy-west.arche/disconnect
-        :args (s/cat :connection ::connection))
+(spec/def :alia.execute/opts map?)
 
-(s/fdef troy-west.arche/execute
-        :args ::execute-args)
+(spec/def :arche/cql string?)
+(spec/def :arche/prepared #(instance? PreparedStatement %))
 
-(s/fdef troy-west.arche/execute-async
-        :args ::execute-args)
+(spec/def :arche/statement-key keyword?)
+(spec/def :arche/statement (spec/keys :req-un [:arche/cql :arche/prepared]
+                                      :opt-un [:alia.execute/opts]))
+
+(spec/def :arche/statements (spec/map-of :arche/statement-key :arche/statement))
+
+(spec/def :arche/udt-encoder ifn?)
+(spec/def :arche/udt-encoders (spec/coll-of :arche/udt-encoder))
+
+(spec/def :arche/connection (spec/keys :req-un [:cassandra/session :arche/statements :arche/udt-encoders]))
+
+;; Execution
+(spec/def ::execute-args (spec/or :first (spec/cat :connection :arche/connection
+                                                   :key :arche/statement-key)
+                                  :second (spec/cat :connection :arche/connection
+                                                    :key :arche/statement-key
+                                                    :opts (spec/or :nil nil?
+                                                                   :opts :alia.execute/opts))))
+
+(spec/fdef troy-west.arche/prepare-statements
+           :args (spec/cat :session :cassandra/session
+                           :statements (spec/or :nil nil?
+                                                :statements :arche.config/statements)))
+
+(spec/fdef troy-west.arche/prepare-encoders
+           :args (spec/cat :session :cassandra/session
+                           :udts (spec/or :nil nil? :udts :arche.config/udts)))
+
+(spec/fdef troy-west.arche/encode-udt
+           :args (spec/cat :connection :arche/connection
+                           :key any?
+                           :value any?))
+
+(spec/fdef troy-west.arche/connect
+           :args (spec/cat :cluster :cassandra/cluster
+                           :opts (spec/? (spec/keys :opt-un [:cassandra/keyspace
+                                                             :arche.config/statements
+                                                             :arche.config/udts]))))
+
+(spec/fdef troy-west.arche/disconnect
+           :args (spec/cat :connection :cassandra/connection))
+
+(spec/fdef troy-west.arche/execute :args ::execute-args)
+
+(spec/fdef troy-west.arche/execute-async :args ::execute-args)
 
 (defn instrument!
   []

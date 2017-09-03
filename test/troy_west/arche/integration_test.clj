@@ -17,7 +17,6 @@
                                     {:code     "AB"
                                      :currency "GBP"
                                      :notional "12"})]
-
       (is (instance? UDTValue encoded)))))
 
 (defn test-write-then-read

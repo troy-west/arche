@@ -36,7 +36,9 @@
       :statements   (prepare-statements session (if (map? statements)
                                                   statements
                                                   (apply merge statements)))
-      :udt-encoders (prepare-encoders session (apply merge udts))})))
+      :udt-encoders (prepare-encoders session (if (map? udts)
+                                                udts
+                                                (apply merge udts)))})))
 
 (defn disconnect
   [connection]
