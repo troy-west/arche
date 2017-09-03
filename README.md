@@ -136,10 +136,10 @@ For convenience, a tagged literal is provided that translates file/resource path
 
 ### Vanilla State Management (no Component or Integrant)
 
-Create a cluster instance using alia.
+Define statements and UDTs that match the expected schema
 
 ``` clojure
-(def udts [{:test/asset {:name "asset"}}])
+(def udts {:test/asset {:name "asset"}})
 
 (def statements {:test/insert-client "INSERT INTO client (id, name) VALUES (:id, :name)"
                  :test/select-client {:cql  "SELECT * FROM client WHERE id = :id"
@@ -148,7 +148,7 @@ Create a cluster instance using alia.
                  :test/select-trade  "SELECT id, asset_basket as \"asset-basket\" FROM trade where id = :id"})
 ```
 
-Create an arche connection with the cluster and (optional) keyspace, statements, and UDT's.
+Create an arche connection with the cluster and (optional) keyspace, statements, and UDTs.
 
 ``` clojure
 (require '[troy-west.arche :as arche])
@@ -157,7 +157,7 @@ Create an arche connection with the cluster and (optional) keyspace, statements,
                                               :port 19142})
                                {:keyspace   "sandbox" 
                                 :statements statements
-                                :udts       [udts]}))
+                                :udts       udts}))
 ```
 
 Using UDT encoders.
