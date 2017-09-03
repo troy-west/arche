@@ -22,7 +22,6 @@
 
   :modules {:inherited {:dependencies        [[org.clojure/clojure "_"]
                                               [cc.qbits/alia "_"]]
-                        :resource-paths      ["test-resources"]
                         :subprocess          nil
                         :deploy-repositories [["releases" {:url "https://clojars.org/repo/" :creds :gpg}]]}
             :versions  {org.clojure/clojure           "1.8.0"
