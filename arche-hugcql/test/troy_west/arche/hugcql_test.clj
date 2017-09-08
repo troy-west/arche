@@ -48,7 +48,7 @@
 (deftest load-statements
 
   (is (= {:arche/insert-client "INSERT INTO client (id, name) VALUES (:id, :name)"
-          :arche/select-client {:cql "SELECT * FROM client WHERE id = :id"
+          :arche/select-client {:cql  "SELECT * FROM client WHERE id = :id"
                                 :opts {:fetch-size 500}}
           :arche/insert-trade  "INSERT INTO trade (id, asset_basket) VALUES (:id, :\"asset-basket\")"
           :arche/select-trade  "SELECT id, asset_basket as \"asset-basket\" FROM trade where id = :id"}
@@ -57,8 +57,26 @@
 (deftest reader-literals
 
   (is (= {:arche/insert-client "INSERT INTO client (id, name) VALUES (:id, :name)"
-          :arche/select-client {:cql "SELECT * FROM client WHERE id = :id"
+          :arche/select-client {:cql  "SELECT * FROM client WHERE id = :id"
                                 :opts {:fetch-size 500}}
           :arche/insert-trade  "INSERT INTO trade (id, asset_basket) VALUES (:id, :\"asset-basket\")"
           :arche/select-trade  "SELECT id, asset_basket as \"asset-basket\" FROM trade where id = :id"}
          #arche.hugcql/statements "cql/test.hcql")))
+
+(deftest options-corner-cases
+
+  ;; ok
+  (is (= {:arche/select-client {:cql  "SELECT * FROM client WHERE id = :id"
+                                :opts {:fetch-size 500}}}
+         (hugcql/parse "--:name arche/select-client\n--:options {:fetch-size 500}\nSELECT * FROM client WHERE id = :id\n")))
+
+  ;; invalid options
+  (is (= {:arche/select-client "SELECT * FROM client WHERE id = :id"}
+         (hugcql/parse "--:name arche/select-client\n--:options {:fetch-size}\nSELECT * FROM client WHERE id = :id\n")))
+
+  (is (= {:arche/select-client {:cql  "SELECT * FROM client WHERE id = :id"
+                                :opts {:one :two}}}
+         (hugcql/parse "--:name arche/select-client\n--:options {:one #_ two :two}\nSELECT * FROM client WHERE id = :id\n")))
+
+  ;; find one that fails, there's boud to be one..
+  )
