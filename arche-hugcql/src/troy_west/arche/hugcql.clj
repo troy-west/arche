@@ -64,7 +64,7 @@
    a map of key (statement name) -> statement string.
 
    The statement strings will have any Hugsql Values and Identifiers
-   quoted.
+   quoted if necessary.
 
    i.e.
      --:name foo/bar
@@ -72,7 +72,19 @@
 
    becomes
 
-     {:foo/bar \"select foo_bar as \\\"foo-bar\\\" from emp where id = :\\\"id\\\"\"}
+     {:foo/bar \"select foo_bar as \\\"foo-bar\\\" from emp where id = :id\"}
+
+   Options can be provided in EDN format that are defaulted on statement execution
+
+   i.e.
+     --:name foo/bar
+     --:options {:fetch-size 500}
+     select :i:foo-bar from emp where id = :id
+
+   becomes
+
+     {:foo/bar {:cql  \"select foo_bar as \\\"foo-bar\\\" from emp where id = :id\"
+                :opts {:fetch-size 500}}
 
   See: https://www.hugsql.org/
        https://www.hugsql.org/#param-value
