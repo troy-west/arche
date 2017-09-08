@@ -60,11 +60,10 @@
   (statements (hugsql/parsed-defs-from-string text)))
 
 (defn load
-  "Reads named CQL statements (using Hugsql formatting) and returns
-   a map of key (statement name) -> statement string.
+  "Reads named HugCQL files (using HugSQL formatting) and returns
+   a map of key (statement name) -> statement string / opts if defined.
 
-   The statement strings will have any Hugsql Values and Identifiers
-   quoted if necessary.
+   Statements will be have values and identifiers automatically hyphen/underscore translated.
 
    i.e.
      --:name foo/bar
@@ -90,8 +89,7 @@
        https://www.hugsql.org/#param-value
        https://www.hugsql.org/#param-identifier
 
-  Note: The other more dynamic features of Hugsql are not supported here,
-        list, tuples, snippets.
+  Note: The other more dynamic features of Hugsql are not supported here, list, tuples, snippets.
   "
   [path]
   (statements (hugsql/parsed-defs-from-file path)))
