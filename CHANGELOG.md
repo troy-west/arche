@@ -13,7 +13,7 @@ All notable changes to this project will be documented in this file. This change
 
 - Updated module README
 
-## 0.2.0 - 2017-09-03
+## [0.2.0] - 2017-09-03
 
 ### Added
 
