@@ -78,5 +78,5 @@
                                 :opts {:one :two}}}
          (hugcql/parse "--:name arche/select-client\n--:options {:one #_ two :two}\nSELECT * FROM client WHERE id = :id\n")))
 
-  ;; find one that fails, there's boud to be one..
+  ;; find one that fails, there's bound to be one..
   )
