@@ -45,6 +45,6 @@ jobs:
       - run: lein cljfmt check
 
       # run modules cljfmt check
-      - run: lein cljfmt check
+      - run: lein modules cljfmt check
 
 
