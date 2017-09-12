@@ -8,7 +8,7 @@
   ([connection key opts]
    (arche/execute* manifold/execute connection key opts)))
 
-(defn execute
+(defn execute-buffered
   ([connection key]
    (arche/execute* manifold/execute-buffered connection key))
   ([connection key opts]

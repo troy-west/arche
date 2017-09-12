@@ -47,4 +47,10 @@ jobs:
       # run modules cljfmt check
       - run: lein modules cljfmt check
 
+      # run arche-all kibit
+      - run: lein kibit
+
+      # run modules kibit
+      - run: lein modules kibit
+
 
