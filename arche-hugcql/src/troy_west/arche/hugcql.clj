@@ -42,16 +42,16 @@
 
 (defn statement-cql
   [sql-keys]
-  (apply str (map resolve-key sql-keys)))
+  (str/join (map resolve-key sql-keys)))
 
 (defn statements
   [pdefs]
-  (->> (for [{:keys [hdr sql]} pdefs]
-         [(statement-key hdr) (if-let [opts (statement-options hdr)]
-                                {:cql  (statement-cql sql)
-                                 :opts opts}
-                                (statement-cql sql))])
-       (into {})))
+  (into {}
+        (for [{:keys [hdr sql]} pdefs]
+          [(statement-key hdr) (if-let [opts (statement-options hdr)]
+                                 {:cql  (statement-cql sql)
+                                  :opts opts}
+                                 (statement-cql sql))])))
 
 (defn parse
   "Same as load-prepared-statements but takes a string as an input rather than a file."
