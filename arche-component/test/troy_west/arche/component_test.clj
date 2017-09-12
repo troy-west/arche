@@ -30,13 +30,13 @@
 
   (is (= nil
          (meta
-           (arche.component/connection {:keyspace   "sandbox"
-                                        :statements ["prepared/test.cql"]
-                                        :udts       {::asset {:name "asset"}}}))))
+          (arche.component/connection {:keyspace   "sandbox"
+                                       :statements ["prepared/test.cql"]
+                                       :udts       {::asset {:name "asset"}}}))))
 
   (is (= {:com.stuartsierra.component/dependencies {:cluster :test/cluster}}
          (meta
-           (arche.component/connection {:cluster    :test/cluster
-                                        :keyspace   "sandbox"
-                                        :statements ["prepared/test.cql"]
-                                        :udts       {::asset {:name "asset"}}})))))
+          (arche.component/connection {:cluster    :test/cluster
+                                       :keyspace   "sandbox"
+                                       :statements ["prepared/test.cql"]
+                                       :udts       {::asset {:name "asset"}}})))))

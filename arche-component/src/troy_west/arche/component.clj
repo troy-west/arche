@@ -17,9 +17,10 @@
   component/Lifecycle
   (start [this]
     (let [{:keys [session statements udt-encoders]} (arche/connect (:cluster cluster) config)]
-      (assoc this :session session
-                  :statements statements
-                  :udt-encoders udt-encoders)))
+      (assoc this
+             :session session
+             :statements statements
+             :udt-encoders udt-encoders)))
 
   (stop [this]
     (alia/shutdown session)))
@@ -35,4 +36,4 @@
   [config]
   (let [cluster (:cluster config)]
     (cond-> (map->ConnectionComponent {:config config})
-            cluster (component/using {:cluster cluster}))))
+      cluster (component/using {:cluster cluster}))))
