@@ -37,9 +37,8 @@
     (try
       ;; TODO: someone remind me why I can't just do this?
       (edn/read-string (str/join " " opts-parts))
-      (catch Exception ex
-        ;; naughty!
-        ))))
+      ;; naughty!
+      (catch Exception ex))))
 
 (defn statement-cql
   [sql-keys]

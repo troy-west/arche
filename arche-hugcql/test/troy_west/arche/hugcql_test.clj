@@ -23,13 +23,13 @@
           :arche/insert-trade  "INSERT INTO trade (id, asset_basket) VALUES (:id, :\"asset-basket\")"
           :arche/select-trade  "SELECT id, asset_basket as \"asset-basket\" FROM trade where id = :id"}
          (hugcql/statements
-           [{:hdr {:name ["arche/insert-client"]}
-             :sql ["INSERT INTO client (id, name) VALUES (" {:type :v :name :id} ", " {:type :v :name :name} ")"]}
-            {:hdr {:name ["arche/select-client"]} :sql ["SELECT * FROM client WHERE id = " {:type :v :name :id}]}
-            {:hdr {:name ["arche/insert-trade"]}
-             :sql ["INSERT INTO trade (id, asset_basket) VALUES (" {:type :v :name :id} ", " {:type :v :name :asset-basket} ")"]}
-            {:hdr {:name ["arche/select-trade"]}
-             :sql ["SELECT id, " {:type :i :name :asset-basket} " FROM trade where id = " {:type :v :name :id}]}]))))
+          [{:hdr {:name ["arche/insert-client"]}
+            :sql ["INSERT INTO client (id, name) VALUES (" {:type :v :name :id} ", " {:type :v :name :name} ")"]}
+           {:hdr {:name ["arche/select-client"]} :sql ["SELECT * FROM client WHERE id = " {:type :v :name :id}]}
+           {:hdr {:name ["arche/insert-trade"]}
+            :sql ["INSERT INTO trade (id, asset_basket) VALUES (" {:type :v :name :id} ", " {:type :v :name :asset-basket} ")"]}
+           {:hdr {:name ["arche/select-trade"]}
+            :sql ["SELECT id, " {:type :i :name :asset-basket} " FROM trade where id = " {:type :v :name :id}]}]))))
 
 (deftest parse-statements
 
@@ -63,8 +63,8 @@
           :arche/select-trade  "SELECT id, asset_basket as \"asset-basket\" FROM trade where id = :id"}
          #arche.hugcql/statements "cql/test.hcql")))
 
+;; find one that fails, there's bound to be one..
 (deftest options-corner-cases
-
   ;; ok
   (is (= {:arche/select-client {:cql  "SELECT * FROM client WHERE id = :id"
                                 :opts {:fetch-size 500}}}
@@ -76,7 +76,4 @@
 
   (is (= {:arche/select-client {:cql  "SELECT * FROM client WHERE id = :id"
                                 :opts {:one :two}}}
-         (hugcql/parse "--:name arche/select-client\n--:options {:one #_ two :two}\nSELECT * FROM client WHERE id = :id\n")))
-
-  ;; find one that fails, there's bound to be one..
-  )
+         (hugcql/parse "--:name arche/select-client\n--:options {:one #_ two :two}\nSELECT * FROM client WHERE id = :id\n"))))
