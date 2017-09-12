@@ -33,13 +33,13 @@
                                                       :udts       udts})
 
         component-system (component/start-system
-                           {:cluster    #arche/cluster{:contact-points ["127.0.0.1"]
-                                                       :port           19142}
-                            :connection #arche/connection{:keyspace   "sandbox"
-                                                          :statements [#arche.hugcql/statements "cql/test1.hcql"
-                                                                       #arche.hugcql/statements "cql/test2.hcql"]
-                                                          :udts       [{:arche/asset {:name "asset"}}]
-                                                          :cluster    :cluster}})
+                          {:cluster    #arche/cluster{:contact-points ["127.0.0.1"]
+                                                      :port           19142}
+                           :connection #arche/connection{:keyspace   "sandbox"
+                                                         :statements [#arche.hugcql/statements "cql/test1.hcql"
+                                                                      #arche.hugcql/statements "cql/test2.hcql"]
+                                                         :udts       [{:arche/asset {:name "asset"}}]
+                                                         :cluster    :cluster}})
 
         integrant-system (integrant/init {:arche/cluster    {:contact-points ["127.0.0.1"] :port 19142}
                                           :arche/connection {:keyspace   "sandbox"

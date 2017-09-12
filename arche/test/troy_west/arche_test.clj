@@ -17,11 +17,11 @@
                     :opts     {:fetch-size 5000}}}
          (with-redefs [alia/prepare (fn [_ cql] (format "prepared: %s" cql))]
            (arche/prepare-statements
-             nil
-             {:query-1 "a-query"
-              :query-2 {:cql "b-query"}
-              :query-3 {:cql  "c-query"
-                        :opts {:fetch-size 5000}}})))))
+            nil
+            {:query-1 "a-query"
+             :query-2 {:cql "b-query"}
+             :query-3 {:cql  "c-query"
+                       :opts {:fetch-size 5000}}})))))
 
 (deftest prepare-encoders
 
@@ -31,9 +31,9 @@
           :udt-2 {:prepared true}}
          (with-redefs [alia.udt/encoder (fn [_ name codec] {:prepared true})]
            (arche/prepare-encoders
-             nil
-             {:udt-1 {}
-              :udt-2 {}})))))
+            nil
+            {:udt-1 {}
+             :udt-2 {}})))))
 
 (deftest options
 
@@ -52,7 +52,6 @@
   (is (= {:fetch-size 20
           :channel    "chan"}
          (arche/options {:statements {::select {:opts {:fetch-size 20}}}} ::select {:channel "chan"}))))
-
 
 (deftest execute*
 
