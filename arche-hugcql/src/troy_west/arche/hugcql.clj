@@ -46,7 +46,7 @@
 
 (defn statements
   [pdefs]
-  (->> (for [{:keys [hdr sql] :as pdef} pdefs]
+  (->> (for [{:keys [hdr sql]} pdefs]
          [(statement-key hdr) (if-let [opts (statement-options hdr)]
                                 {:cql  (statement-cql sql)
                                  :opts opts}

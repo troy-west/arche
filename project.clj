@@ -5,7 +5,9 @@
             :url  "http://www.eclipse.org/legal/epl-v10.html"}
 
   :plugins [[lein-modules "0.3.11"]
-            [lein-cljfmt "0.5.7"]]
+            [lein-cljfmt "0.5.7" :exclusions [org.clojure/clojure]]
+            [jonase/eastwood "0.2.4" :exclusions [org.clojure/clojure]]
+            [lein-kibit "0.1.5" :exclusions [org.clojure/clojure]]]
 
   :dependencies [[org.clojure/clojure "_"]
                  [cc.qbits/alia "_"]
@@ -24,7 +26,10 @@
   :modules {:inherited {:dependencies        [[org.clojure/clojure "_"]
                                               [cc.qbits/alia "_"]]
                         :subprocess          nil
-                        :deploy-repositories [["releases" {:url "https://clojars.org/repo/" :creds :gpg}]]}
+                        :deploy-repositories [["releases" {:url "https://clojars.org/repo/" :creds :gpg}]]
+                        :eastwood            {:add-linters [:unused-fn-args :unused-locals :unused-namespaces
+                                                            :unused-private-vars]
+                                              :namespaces  [:source-paths]}}
             :versions  {org.clojure/clojure           "1.8.0"
                         clojure-future-spec           "1.9.0-alpha17"
                         cc.qbits/alia                 "4.0.0"
@@ -46,4 +51,12 @@
                   ["change" "version" "leiningen.release/bump-version"]
                   ["modules" "change" "version" "leiningen.release/bump-version"]
                   ["vcs" "commit"]
-                  ["vcs" "push"]])
+                  ["vcs" "push"]]
+
+  :eastwood {:add-linters [:unused-fn-args :unused-locals :unused-namespaces
+                           :unused-private-vars]
+             :namespaces  [:source-paths]}
+
+  :global-vars {*warn-on-reflection* true}
+
+  :pedantic? :ranges)

@@ -1,8 +1,7 @@
 (ns troy-west.arche.spec
   (:require [clojure.future :refer [any?]]
             [clojure.spec.alpha :as spec]
-            [clojure.spec.test.alpha :as spec.test]
-            [troy-west.arche :as arche])
+            [clojure.spec.test.alpha :as spec.test])
   (:import (com.datastax.driver.core SessionManager Cluster PreparedStatement)))
 
 ;; Configuration
