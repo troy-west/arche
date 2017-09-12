@@ -13,7 +13,7 @@
                      prepared (alia/prepare session cql)]
                  (assoc ret k (cond-> {:cql      cql
                                        :prepared prepared}
-                                      opts (assoc :opts opts)))))
+                                opts (assoc :opts opts)))))
              {}
              config))
 
@@ -30,8 +30,9 @@
   ([cluster]
    (connect cluster nil))
   ([cluster {:keys [keyspace statements udts]}]
-   (let [session (if keyspace (alia/connect cluster keyspace)
-                              (alia/connect cluster))]
+   (let [session (if keyspace
+                   (alia/connect cluster keyspace)
+                   (alia/connect cluster))]
      {:session      session
       :statements   (prepare-statements session (if (map? statements)
                                                   statements
