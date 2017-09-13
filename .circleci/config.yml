@@ -38,19 +38,5 @@ jobs:
             - ~/.m2
           key: v1-dependencies-{{ checksum "project.clj" }}
 
-      # run module tests!
-      - run: lein modules test
-
-      # run arche-all cljfmt check
-      - run: lein cljfmt check
-
-      # run modules cljfmt check
-      - run: lein modules cljfmt check
-
-      # run arche-all kibit
-      - run: lein kibit
-
-      # run modules kibit
-      - run: lein modules kibit
-
-
+      # clean, test, lint.
+      - run: lein smoke
