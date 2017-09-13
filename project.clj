@@ -1,6 +1,8 @@
 (defproject com.troy-west/arche-all "0.2.2-SNAPSHOT"
   :description "Arche: A Clojure Battery Pack for Cassandra/Alia"
+
   :url "http://www.troy-west.com/arche"
+
   :license {:name "Eclipse Public License"
             :url  "http://www.eclipse.org/legal/epl-v10.html"}
 
@@ -25,9 +27,16 @@
 
   :modules {:inherited {:dependencies        [[org.clojure/clojure "_"]
                                               [cc.qbits/alia "_"]]
+
                         :subprocess          nil
+
                         :deploy-repositories [["releases" {:url "https://clojars.org/repo/" :creds :gpg}]]
-                        :eastwood            {:add-linters [:unused-fn-args :unused-locals :unused-namespaces
+
+                        :aliases             {"puff" ["do" ["clean"] ["check"] ["test"] ["kibit"] ["cljfmt" "check"]]}
+
+                        :eastwood            {:add-linters [:unused-fn-args
+                                                            :unused-locals
+                                                            :unused-namespaces
                                                             :unused-private-vars]
                                               :namespaces  [:source-paths]}}
             :versions  {org.clojure/clojure           "1.8.0"
@@ -53,10 +62,12 @@
                   ["vcs" "commit"]
                   ["vcs" "push"]]
 
-  :eastwood {:add-linters [:unused-fn-args :unused-locals :unused-namespaces
+  :aliases {"smoke" ["do" ["modules" "puff"] ["clean"] ["check"] ["kibit"] ["cljfmt" "check"]]}
+
+  :eastwood {:add-linters [:unused-fn-args
+                           :unused-locals
+                           :unused-namespaces
                            :unused-private-vars]
              :namespaces  [:source-paths]}
-
-  :global-vars {*warn-on-reflection* true}
 
   :pedantic? :ranges)
