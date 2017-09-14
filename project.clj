@@ -41,9 +41,9 @@
                                               :namespaces  [:source-paths]}}
             :versions  {org.clojure/clojure           "1.8.0"
                         clojure-future-spec           "1.9.0-alpha17"
-                        cc.qbits/alia                 "4.0.0"
-                        cc.qbits/alia-async           "4.0.0"
-                        cc.qbits/alia-manifold        "4.0.0"
+                        cc.qbits/alia                 "4.0.1"
+                        cc.qbits/alia-async           "4.0.1"
+                        cc.qbits/alia-manifold        "4.0.1"
                         com.troy-west/arche           :version
                         com.troy-west/arche-hugcql    :version
                         com.troy-west/arche-integrant :version
