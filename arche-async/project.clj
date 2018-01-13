@@ -1,4 +1,4 @@
-(defproject com.troy-west/arche-async "0.2.3"
+(defproject com.troy-west/arche-async "0.2.4-SNAPSHOT"
   :description "Arche: Alia / core.async module"
 
   :license {:name "Eclipse Public License"
