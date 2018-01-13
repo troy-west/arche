@@ -1,4 +1,4 @@
-(defproject com.troy-west/arche "0.2.4"
+(defproject com.troy-west/arche "0.2.5-SNAPSHOT"
   :description "Arche: A Clojure Battery Pack for Alia / Cassandra"
 
   :url "http://www.troy-west.com/arche"

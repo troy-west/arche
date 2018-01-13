@@ -1,4 +1,4 @@
-(defproject com.troy-west/arche-component "0.2.4"
+(defproject com.troy-west/arche-component "0.2.5-SNAPSHOT"
   :description "Arche: Component module"
 
   :license {:name "Eclipse Public License"
