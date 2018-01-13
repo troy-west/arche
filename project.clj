@@ -8,8 +8,8 @@
 
   :plugins [[lein-modules "0.3.11"]
             [lein-cljfmt "0.5.7" :exclusions [org.clojure/clojure]]
-            [jonase/eastwood "0.2.4" :exclusions [org.clojure/clojure]]
-            [lein-kibit "0.1.5" :exclusions [org.clojure/clojure]]]
+            [jonase/eastwood "0.2.5" :exclusions [org.clojure/clojure]]
+            [lein-kibit "0.1.6" :exclusions [org.clojure/clojure org.clojure/tools.reader]]]
 
   :dependencies [[org.clojure/clojure "_"]
                  [cc.qbits/alia "_"]
@@ -22,7 +22,7 @@
 
   :profiles {:dev {:resource-paths ["test-resources"]
                    :dependencies   [[com.smxemail/ccm-clj "1.1.0"]
-                                    [ch.qos.logback/logback-classic "1.1.8"]]}}
+                                    [ch.qos.logback/logback-classic "1.2.3"]]}}
 
   :modules {:inherited {:dependencies        [[org.clojure/clojure "_"]
                                               [cc.qbits/alia "_"]]
@@ -39,9 +39,9 @@
                                                             :unused-private-vars]
                                               :namespaces  [:source-paths]}}
             :versions  {org.clojure/clojure           "1.9.0"
-                        cc.qbits/alia                 "4.0.1"
-                        cc.qbits/alia-async           "4.0.1"
-                        cc.qbits/alia-manifold        "4.0.1"
+                        cc.qbits/alia                 "4.1.1"
+                        cc.qbits/alia-async           "4.1.1"
+                        cc.qbits/alia-manifold        "4.1.1"
                         com.troy-west/arche           :version
                         com.troy-west/arche-hugcql    :version
                         com.troy-west/arche-integrant :version
