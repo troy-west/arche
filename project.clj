@@ -38,7 +38,7 @@
                                                             :unused-namespaces
                                                             :unused-private-vars]
                                               :namespaces  [:source-paths]}}
-            :versions  {org.clojure/clojure           "1.9.0-beta1"
+            :versions  {org.clojure/clojure           "1.9.0"
                         cc.qbits/alia                 "4.0.1"
                         cc.qbits/alia-async           "4.0.1"
                         cc.qbits/alia-manifold        "4.0.1"
