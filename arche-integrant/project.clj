@@ -1,4 +1,4 @@
-(defproject com.troy-west/arche-integrant "0.2.4-SNAPSHOT"
+(defproject com.troy-west/arche-integrant "0.2.4"
   :description "Arche: Integrant module"
 
   :license {:name "Eclipse Public License"
