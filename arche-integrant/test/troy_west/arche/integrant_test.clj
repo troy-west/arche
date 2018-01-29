@@ -26,12 +26,14 @@
                                                (keyword (str "shutdown-" (name x)))))]
 
       (let [init-comp (integrant/init cassandra-config)]
+
         (is (= {[:arche/cluster :test/cluster-1]       ::cluster,
                 [:arche/connection :test/connection-1] :connection-sandbox,
                 [:arche/connection :test/connection-2] :connection-foobar}
                init-comp))
 
-        (let [stop-comp (integrant/halt! init-comp)]
-          (is (= @shutdowns [:shutdown-connection-foobar
-                             :shutdown-connection-sandbox
-                             :shutdown-cluster])))))))
+        (integrant/halt! init-comp)
+
+        (is (= @shutdowns [:shutdown-connection-foobar
+                           :shutdown-connection-sandbox
+                           :shutdown-cluster]))))))
