@@ -1,6 +1,6 @@
 (ns troy-west.arche.integrant
-  (:require [integrant.core :as ig]
-            [troy-west.arche :as arche]
+  (:require [troy-west.arche :as arche]
+            [integrant.core :as ig]
             [qbits.alia :as alia]))
 
 ;;;;;;;;;;;
@@ -25,3 +25,6 @@
 (defmethod ig/halt-key! :arche/connection
   [_ connection]
   (arche/disconnect connection))
+
+(def data-readers
+  {'ig/ref ig/ref})

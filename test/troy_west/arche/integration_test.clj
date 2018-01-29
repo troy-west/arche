@@ -91,3 +91,11 @@
 
     (test-udt-encoding mode connection)
     (test-write-then-read mode connection)))
+
+(deftest loaded
+
+  (let [mode       "loaded"
+        connection (fixture/connection mode)]
+
+    (test-udt-encoding mode connection)
+    (test-write-then-read mode connection)))

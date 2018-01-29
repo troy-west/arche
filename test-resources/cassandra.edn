@@ -1,0 +1,6 @@
+{:arche/cluster    {:contact-points ["127.0.0.1"]
+                    :port           19142}
+ :arche/connection {:keyspace   "sandbox"
+                    :cluster    #ig/ref :arche/cluster
+                    :statements [#arche/hugcql "cql/test.hcql"]
+                    :udts       [{:arche/asset {:name "asset"}}]}}
