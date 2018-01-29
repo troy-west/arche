@@ -2,10 +2,13 @@
   (:require [clojure.test :refer :all]
             [troy-west.arche :as arche]
             [troy-west.arche.spec :as arche.spec]
+            [troy-west.arche.hugcql]
+            [troy-west.arche.component]
+            [troy-west.arche.integrant]
             [qbits.alia :as alia]
             [ccm-clj.core :as ccm]
-            [com.stuartsierra.component :as component]
-            [integrant.core :as integrant]))
+            [integrant.core :as ig]
+            [com.stuartsierra.component :as cp]))
 
 (defonce system (atom {}))
 
@@ -29,7 +32,7 @@
                                                       :statements #arche.hugcql/statements "cql/test.hcql"
                                                       :udts       udts})
 
-        component-system (component/start-system
+        component-system (cp/start-system
                           {:cluster    #arche/cluster{:contact-points ["127.0.0.1"]
                                                       :port           19142}
                            :connection #arche/connection{:keyspace   "sandbox"
@@ -38,9 +41,9 @@
                                                          :udts       [{:arche/asset {:name "asset"}}]
                                                          :cluster    :cluster}})
 
-        integrant-system (integrant/init {:arche/cluster    {:contact-points ["127.0.0.1"] :port 19142}
+        integrant-system (ig/init {:arche/cluster           {:contact-points ["127.0.0.1"] :port 19142}
                                           :arche/connection {:keyspace   "sandbox"
-                                                             :cluster    (integrant/ref :arche/cluster)
+                                                             :cluster    (ig/ref :arche/cluster)
                                                              :statements statements
                                                              :udts       udts}})]
 
@@ -60,8 +63,8 @@
   (alia/shutdown (connection "hand-rolled"))
   (alia/shutdown (get-in @system ["hand-rolled" :cluster]))
 
-  (component/stop-system (get-in @system ["component" :system]))
-  (integrant/halt! (get-in @system ["integrant" :system]))
+  (cp/stop-system (get-in @system ["component" :system]))
+  (ig/halt! (get-in @system ["integrant" :system]))
 
   (ccm/stop!)
   (reset! system {}))
