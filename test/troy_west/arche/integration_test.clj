@@ -3,9 +3,8 @@
             [clojure.core.async :as async]
             [troy-west.arche :as arche]
             [troy-west.arche.async :as arche.async]
-            [troy-west.arche.integration-fixture :as fixture]
-            [ccm-clj.core :as ccm])
-  (:import [com.datastax.driver.core UDTValue Session]))
+            [troy-west.arche.integration-fixture :as fixture])
+  (:import [com.datastax.driver.core UDTValue]))
 
 (use-fixtures :once fixture/wrap-test)
 

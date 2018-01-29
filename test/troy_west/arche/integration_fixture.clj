@@ -1,9 +1,6 @@
 (ns troy-west.arche.integration-fixture
   (:require [clojure.test :refer :all]
             [troy-west.arche :as arche]
-            [troy-west.arche.hugcql :as arche.hugcql]
-            [troy-west.arche.component :as arche.component]
-            [troy-west.arche.integrant :as arche.integrant]
             [troy-west.arche.spec :as arche.spec]
             [qbits.alia :as alia]
             [ccm-clj.core :as ccm]

@@ -2,8 +2,7 @@
   (:refer-clojure :exclude [resolve])
   (:require [qbits.alia :as alia]
             [qbits.alia.udt :as alia.udt]
-            [qbits.alia.codec.default :as codec.default])
-  (:import (clojure.lang Keyword)))
+            [qbits.alia.codec.default :as codec.default]))
 
 (defn prepare-statements
   [session config]
