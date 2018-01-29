@@ -1,7 +1,7 @@
 (ns troy-west.arche.integrant-test
   (:require [clojure.test :refer [deftest is use-fixtures]]
             [troy-west.arche :as arche]
-            [troy-west.arche.integrant :as arche.integrant]
+            [troy-west.arche.integrant]
             [integrant.core :as integrant]
             [qbits.alia :as alia]))
 

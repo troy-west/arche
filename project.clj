@@ -31,7 +31,7 @@
 
                         :deploy-repositories [["releases" {:url "https://clojars.org/repo/" :creds :gpg}]]
 
-                        :aliases             {"puff" ["do" ["clean"] ["check"] ["test"] ["kibit"] ["cljfmt" "check"]]}
+                        :aliases             {"puff" ["do" ["clean"] ["install"] ["deps"] ["check"] ["test"] ["kibit"] ["cljfmt" "check"]]}
 
                         :eastwood            {:add-linters [:unused-fn-args
                                                             :unused-locals
