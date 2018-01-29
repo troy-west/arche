@@ -2,17 +2,17 @@
   (:require [clojure.test :refer [deftest is use-fixtures]]
             [troy-west.arche :as arche]
             [troy-west.arche.integrant]
-            [integrant.core :as integrant]
+            [integrant.core :as ig]
             [qbits.alia :as alia]))
 
 (def cassandra-config
   {[:arche/cluster :test/cluster-1]       {:contact-points ["127.0.0.1"] :port 19142}
    [:arche/connection :test/connection-1] {:keyspace   "sandbox"
-                                           :cluster    (integrant/ref :test/cluster-1)
+                                           :cluster    (ig/ref :test/cluster-1)
                                            :statements []
                                            :udts       {::asset {:name "asset"}}}
    [:arche/connection :test/connection-2] {:keyspace   "foobar"
-                                           :cluster    (integrant/ref :test/cluster-1)
+                                           :cluster    (ig/ref :test/cluster-1)
                                            :statements []
                                            :udts       {::asset {:name "asset"}}}})
 
@@ -26,14 +26,14 @@
                                                conj
                                                (keyword (str "shutdown-" (name x)))))]
 
-      (let [init-comp (integrant/init cassandra-config)]
+      (let [init-comp (ig/init cassandra-config)]
 
         (is (= {[:arche/cluster :test/cluster-1]       ::cluster,
                 [:arche/connection :test/connection-1] :connection-sandbox,
                 [:arche/connection :test/connection-2] :connection-foobar}
                init-comp))
 
-        (integrant/halt! init-comp)
+        (ig/halt! init-comp)
 
         (is (= @shutdowns [:shutdown-connection-foobar
                            :shutdown-connection-sandbox
