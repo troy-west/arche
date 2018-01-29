@@ -1,4 +1,4 @@
-(defproject com.troy-west/arche-manifold "0.3.0"
+(defproject com.troy-west/arche-manifold "0.3.1-SNAPSHOT"
   :description "Arche: Alia / manifold module"
 
   :license {:name "Eclipse Public License"
