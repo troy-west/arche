@@ -1,10 +1,6 @@
 (ns troy-west.arche.component-test
   (:require [clojure.test :refer [deftest is use-fixtures]]
-            [troy-west.arche :as arche]
-            [troy-west.arche.component :as arche.component]
-            [com.stuartsierra.component :as component]
-            [qbits.alia :as alia])
-  (:import (com.datastax.driver.core Cluster)))
+            [troy-west.arche.component :as arche.component]))
 
 ;; tagged literals provide a simple way to declare clusters and connections in EDN
 

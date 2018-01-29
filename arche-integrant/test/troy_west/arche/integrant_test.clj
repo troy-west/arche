@@ -20,11 +20,10 @@
 
   (let [shutdowns (atom [])]
 
-    (with-redefs [alia/cluster  (fn [_] ::cluster)
-                  arche/connect (fn [_ opts] (keyword (str "connection-" (:keyspace opts))))
-                  alia/shutdown (fn [x] (swap! shutdowns
-                                               conj
-                                               (keyword (str "shutdown-" (name x)))))]
+    (with-redefs [alia/cluster     (fn [_] ::cluster)
+                  arche/connect    (fn [_ opts] (keyword (str "connection-" (:keyspace opts))))
+                  alia/shutdown    (fn [x] (swap! shutdowns conj (keyword (str "shutdown-" (name x)))))
+                  arche/disconnect (fn [x] (swap! shutdowns conj (keyword (str "shutdown-" (name x)))))]
 
       (let [init-comp (ig/init cassandra-config)]
 

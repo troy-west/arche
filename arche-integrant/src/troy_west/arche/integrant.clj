@@ -24,4 +24,4 @@
 
 (defmethod ig/halt-key! :arche/connection
   [_ connection]
-  (alia/shutdown connection))
+  (arche/disconnect connection))

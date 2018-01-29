@@ -1,5 +1,4 @@
 (ns troy-west.arche
-  (:refer-clojure :exclude [resolve])
   (:require [qbits.alia :as alia]
             [qbits.alia.udt :as alia.udt]
             [qbits.alia.codec.default :as codec.default]))

@@ -67,7 +67,7 @@
                                                              :arche.config/udts]))))
 
 (spec/fdef troy-west.arche/disconnect
-           :args (spec/cat :connection :cassandra/connection))
+           :args (spec/cat :connection :arche/connection))
 
 (spec/fdef troy-west.arche/execute :args ::execute-args)
 

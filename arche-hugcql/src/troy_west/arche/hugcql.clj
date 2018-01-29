@@ -92,3 +92,6 @@
   "
   [path]
   (statements (hugsql/parsed-defs-from-file path)))
+
+(def data-readers
+  {'arche/hugcql load})
