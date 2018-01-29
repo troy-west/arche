@@ -14,8 +14,8 @@
 
 (def udts [{:arche/asset {:name "asset"}}])
 
-(def statements [#arche.hugcql/statements "cql/test1.hcql"
-                 #arche.hugcql/statements "cql/test2.hcql"])
+(def statements [#arche/hugcql "cql/test1.hcql"
+                 #arche/hugcql "cql/test2.hcql"])
 
 (defn start-system!
   []
@@ -29,23 +29,23 @@
   (let [hand-cluster     (alia/cluster {:contact-points ["127.0.0.1"]
                                         :port           19142})
         hand-connection  (arche/connect hand-cluster {:keyspace   "sandbox"
-                                                      :statements #arche.hugcql/statements "cql/test.hcql"
+                                                      :statements #arche/hugcql "cql/test.hcql"
                                                       :udts       udts})
 
         component-system (cp/start-system
                           {:cluster    #arche/cluster{:contact-points ["127.0.0.1"]
                                                       :port           19142}
                            :connection #arche/connection{:keyspace   "sandbox"
-                                                         :statements [#arche.hugcql/statements "cql/test1.hcql"
-                                                                      #arche.hugcql/statements "cql/test2.hcql"]
+                                                         :statements [#arche/hugcql "cql/test1.hcql"
+                                                                      #arche/hugcql "cql/test2.hcql"]
                                                          :udts       [{:arche/asset {:name "asset"}}]
                                                          :cluster    :cluster}})
 
-        integrant-system (ig/init {:arche/cluster           {:contact-points ["127.0.0.1"] :port 19142}
-                                          :arche/connection {:keyspace   "sandbox"
-                                                             :cluster    (ig/ref :arche/cluster)
-                                                             :statements statements
-                                                             :udts       udts}})]
+        integrant-system (ig/init {:arche/cluster    {:contact-points ["127.0.0.1"] :port 19142}
+                                   :arche/connection {:keyspace   "sandbox"
+                                                      :cluster    (ig/ref :arche/cluster)
+                                                      :statements statements
+                                                      :udts       udts}})]
 
     (reset! system {"hand-rolled" {:cluster    hand-cluster
                                    :connection hand-connection}

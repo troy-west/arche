@@ -131,7 +131,7 @@ After creating a connection, those statements can be executed by keyword
 For convenience, a tagged literal is provided that translates file/resource paths to statements maps, e.g:
 
 ```text
-#arche.hugcql/statements "stmts1.hcql"
+#arche/hugcql "stmts1.hcql"
 ```
 
 ### Vanilla State Management (no Component or Integrant)
@@ -198,7 +198,7 @@ Create an Ingrant System with HugCQL externalised CQL prepared statements.
                      :port             19142}
      :arche/connection {:keyspace   "sandbox"
                         :cluster    (integrant/ref :arche/cluster)
-                        :statements #arche.hugcql/statements "cql/test.hcql"
+                        :statements #arche/hugcql "cql/test.hcql"
                         :udts       [{:arche/asset {:name "asset"}}]}}))
 
 (def connection (:arche/connection system)
@@ -237,8 +237,8 @@ Create an Ingrant System with HugCQL externalised CQL prepared statements.
     {:cluster    #arche/cluster{:contact-points ["127.0.0.1"]
                                 :port       19142}
      :connection #arche/connection{:keyspace   "sandbox"
-                                   :statements [#arche.hugcql/statements "cql/test1.hcql"
-                                                #arche.hugcql/statements "cql/test2.hcql"]
+                                   :statements [#arche/hugcql "cql/test1.hcql"
+                                                #arche/hugcql "cql/test2.hcql"]
                                    :udts       [{:arche/asset {:name "asset"}}]
                                    :cluster    :cluster}}))
 

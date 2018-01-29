@@ -1,1 +1,1 @@
-{arche.hugcql/statements troy-west.arche.hugcql/load}
+{arche/hugcql troy-west.arche.hugcql/load}

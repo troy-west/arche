@@ -61,7 +61,7 @@
                                 :opts {:fetch-size 500}}
           :arche/insert-trade  "INSERT INTO trade (id, asset_basket) VALUES (:id, :\"asset-basket\")"
           :arche/select-trade  "SELECT id, asset_basket as \"asset-basket\" FROM trade where id = :id"}
-         #arche.hugcql/statements "cql/test.hcql")))
+         #arche/hugcql "cql/test.hcql")))
 
 ;; find one that fails, there's bound to be one..
 (deftest options-corner-cases
