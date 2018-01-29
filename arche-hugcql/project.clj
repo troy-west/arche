@@ -7,6 +7,6 @@
 
   :plugins [[lein-modules "0.3.11"]]
 
-  :dependencies [[com.layerware/hugsql "0.4.7"]]
+  :dependencies [[com.layerware/hugsql "0.4.8"]]
 
   :dev {:resource-paths ["test-resources"]})

@@ -42,7 +42,7 @@
 
 (defn statement-cql
   [sql-keys]
-  (str/join (map resolve-key sql-keys)))
+  (str/trim (str/join (map resolve-key sql-keys))))
 
 (defn statements
   [pdefs]

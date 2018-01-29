@@ -17,6 +17,7 @@
                                            :udts       {::asset {:name "asset"}}}})
 
 (deftest integrant-test
+
   (let [shutdowns (atom [])]
 
     (with-redefs [alia/cluster  (fn [_] ::cluster)
