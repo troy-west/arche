@@ -68,4 +68,4 @@
                            :unused-private-vars]
              :namespaces  [:source-paths]}
 
-  :pedantic? :ranges)
+  :pedantic? :abort)
