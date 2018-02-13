@@ -1,6 +1,8 @@
 (defproject com.troy-west/arche-manifold "0.3.1-SNAPSHOT"
   :description "Arche: Alia / manifold module"
 
+  :url "https://github.com/troy-west/arche"
+  
   :license {:name "Eclipse Public License"
             :url  "http://www.eclipse.org/legal/epl-v10.html"}
 
