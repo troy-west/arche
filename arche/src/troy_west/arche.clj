@@ -1,7 +1,8 @@
 (ns troy-west.arche
   (:require [qbits.alia :as alia]
             [qbits.alia.udt :as alia.udt]
-            [qbits.alia.codec.default :as codec.default]))
+            [qbits.alia.codec.default :as codec.default])
+  (:import (com.datastax.driver.core Cluster)))
 
 (defn prepare-statements
   [session config]
@@ -27,7 +28,7 @@
 (defn connect
   ([cluster]
    (connect cluster nil))
-  ([cluster {:keys [keyspace statements udts]}]
+  ([^Cluster cluster {:keys [keyspace statements udts]}]
    (let [session (if keyspace
                    (alia/connect cluster keyspace)
                    (alia/connect cluster))]
@@ -37,7 +38,8 @@
                                                   (apply merge statements)))
       :udt-encoders (prepare-encoders session (if (map? udts)
                                                 udts
-                                                (apply merge udts)))})))
+                                                (apply merge udts)))
+      :fetch-size   (-> cluster .getConfiguration .getQueryOptions .getFetchSize)})))
 
 (defn disconnect
   [connection]
