@@ -29,17 +29,26 @@
   ([cluster]
    (connect cluster nil))
   ([^Cluster cluster {:keys [keyspace statements udts]}]
-   (let [session (if keyspace
-                   (alia/connect cluster keyspace)
-                   (alia/connect cluster))]
+   (let [session    (if keyspace
+                      (alia/connect cluster keyspace)
+                      (alia/connect cluster))
+         statements (if (map? statements) statements (apply merge statements))
+         udts       (if (map? udts) udts (apply merge udts))]
      {:session      session
-      :statements   (prepare-statements session (if (map? statements)
-                                                  statements
-                                                  (apply merge statements)))
-      :udt-encoders (prepare-encoders session (if (map? udts)
-                                                udts
-                                                (apply merge udts)))
+      :statements   (prepare-statements session statements)
+      :udt-encoders (prepare-encoders session udts)
       :fetch-size   (-> cluster .getConfiguration .getQueryOptions .getFetchSize)})))
+
+(defn derive
+  "Derive a new connection from an existing one"
+  [connection {:keys [statements udts]}]
+  (let [{:keys [session fetch-size]} connection
+        statements (if (map? statements) statements (apply merge statements))
+        udts       (if (map? udts) udts (apply merge udts))]
+    {:session      session
+     :statements   (prepare-statements session statements)
+     :udt-encoders (prepare-encoders session udts)
+     :fetch-size   fetch-size}))
 
 (defn disconnect
   [connection]
