@@ -41,13 +41,13 @@
       (let [client-id (str id-root "async")]
         (is (= {:id   client-id
                 :name client-name}
-               (do (async/<!! (arche.async/execute-chan-buffered connection
-                                                                 :arche/insert-client
-                                                                 {:values {:id   client-id
-                                                                           :name client-name}}))
-                   (async/<!! (arche.async/execute-chan-buffered connection
-                                                                 :arche/select-client
-                                                                 {:values {:id client-id}}))))))
+               (do (async/<!! (arche.async/execute connection
+                                                   :arche/insert-client
+                                                   {:values {:id   client-id
+                                                             :name client-name}}))
+                   (async/<!! (arche.async/execute connection
+                                                   :arche/select-client
+                                                   {:values {:id client-id}}))))))
 
       ;; write then read a udt
       (let [trade-id (str id-root "udt")]
