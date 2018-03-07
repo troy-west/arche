@@ -62,10 +62,4 @@
 
   :aliases {"smoke" ["do" ["modules" "puff"] ["clean"] ["check"] ["kibit"] ["cljfmt" "check"]]}
 
-  :eastwood {:add-linters [:unused-fn-args
-                           :unused-locals
-                           :unused-namespaces
-                           :unused-private-vars]
-             :namespaces  [:source-paths]}
-
   :pedantic? :abort)
