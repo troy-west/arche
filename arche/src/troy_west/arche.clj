@@ -2,8 +2,9 @@
   (:refer-clojure :exclude [derive])
   (:require [qbits.alia :as alia]
             [qbits.alia.udt :as alia.udt]
+            [qbits.alia.enum :as alia.enum]
             [qbits.alia.codec.default :as codec.default])
-  (:import (com.datastax.driver.core Cluster)))
+  (:import (com.datastax.driver.core Cluster BatchStatement)))
 
 (defn prepare-statements
   [session config]
@@ -65,6 +66,16 @@
   (or (some-> (get-in connection [:statements key :opts])
               (merge opts))
       opts))
+
+(defn batch
+  ([connection key values-seq]
+   (batch connection key values-seq :unlogged))
+  ([connection key values-seq type]
+   (let [bs (BatchStatement. (alia.enum/batch-statement-type type))]
+     (doseq [values values-seq]
+       (let [stmt (get-in connection [:statements key :prepared])]
+         (.add bs (alia/bind stmt values))))
+     bs)))
 
 (defn execute*
   ([f connection key]
