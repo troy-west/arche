@@ -1,4 +1,4 @@
-(defproject com.troy-west/arche-component "0.3.5"
+(defproject com.troy-west/arche-component "0.3.6-SNAPSHOT"
   :description "Arche: Component module"
 
   :url "https://github.com/troy-west/arche"
