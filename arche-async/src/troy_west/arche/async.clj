@@ -6,13 +6,13 @@
 ;;       queries where returning a async/chan so we prefer execute vs. execute-chan-buffered
 ;;       as far as naming this particular function is concerned
 (defn execute
-  ([connection key]
-   (arche/execute* alia.async/execute-chan-buffered connection key))
-  ([connection key opts]
-   (arche/execute* alia.async/execute-chan-buffered connection key opts)))
+  ([connection executable]
+   (arche/execute* alia.async/execute-chan-buffered connection executable))
+  ([connection executable opts]
+   (arche/execute* alia.async/execute-chan-buffered connection executable opts)))
 
 (defn execute-chan
-  ([connection key]
-   (arche/execute* alia.async/execute-chan connection key))
-  ([connection key opts]
-   (arche/execute* alia.async/execute-chan connection key opts)))
+  ([connection executable]
+   (arche/execute* alia.async/execute-chan connection executable))
+  ([connection executable opts]
+   (arche/execute* alia.async/execute-chan connection executable opts)))
