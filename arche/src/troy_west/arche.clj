@@ -83,10 +83,10 @@
   ([connection stmt-key values-seq]
    (batch connection stmt-key values-seq :unlogged))
   ([connection stmt-key values-seq type]
-   (let [bs (BatchStatement. (alia.enum/batch-statement-type type))]
+   (let [stmt (get-in connection [:statements stmt-key :prepared])
+         bs   (BatchStatement. (alia.enum/batch-statement-type type))]
      (doseq [values values-seq]
-       (let [stmt (get-in connection [:statements stmt-key :prepared])]
-         (.add bs (alia/bind stmt values))))
+       (.add bs (alia/bind stmt values)))
      bs)))
 
 (defn execute*
