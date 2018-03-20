@@ -24,20 +24,28 @@
                    :dependencies   [[com.smxemail/ccm-clj "1.1.0"]
                                     [ch.qos.logback/logback-classic "1.2.3"]]}}
 
-  :modules {:inherited {:dependencies        [[org.clojure/clojure "_"]
-                                              [cc.qbits/alia "_"]]
+  :modules {:inherited {:dependencies        [[org.clojure/clojure "_"]]
 
                         :subprocess          nil
 
                         :deploy-repositories [["releases" {:url "https://clojars.org/repo/" :creds :gpg}]]
 
-                        :aliases             {"puff" ["do" ["clean"] ["install"] ["deps"] ["check"] ["test"] ["kibit"] ["cljfmt" "check"]]}
-
                         :eastwood            {:add-linters [:unused-fn-args
                                                             :unused-locals
                                                             :unused-namespaces
                                                             :unused-private-vars]
-                                              :namespaces  [:source-paths]}}
+                                              :namespaces  [:source-paths]}
+
+                        :aliases             {"puff" ["do"
+                                                      ["clean"]
+                                                      ["install"]
+                                                      ["deps"]
+                                                      ["check"]
+                                                      ["test"]
+                                                      ["kibit"]
+                                                      ["cljfmt" "check"]
+                                                      ["eastwood"]]}}
+
             :versions  {org.clojure/clojure           "1.9.0"
                         cc.qbits/alia                 "4.1.1"
                         cc.qbits/alia-async           "4.1.1"
