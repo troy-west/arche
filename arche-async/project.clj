@@ -1,4 +1,4 @@
-(defproject com.troy-west/arche-async "0.3.9-SNAPSHOT"
+(defproject com.troy-west/arche-async "0.4.0-SNAPSHOT"
   :description "Arche: Alia / core.async module"
 
   :url "https://github.com/troy-west/arche"
@@ -8,5 +8,6 @@
 
   :plugins [[lein-modules "0.3.11"]]
 
-  :dependencies [[com.troy-west/arche "_"]
-                 [cc.qbits/alia-async "_"]])
+  :dependencies [[org.clojure/core.async "0.4.474"]
+                 [com.troy-west/arche "_"]
+                 [cc.qbits/alia-async "_" :exclusions [org.clojure/core.async]]])

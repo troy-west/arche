@@ -1,4 +1,4 @@
-(defproject com.troy-west/arche "0.3.9-SNAPSHOT"
+(defproject com.troy-west/arche "0.4.0-SNAPSHOT"
   :description "Arche: A Clojure Battery Pack for Alia / Cassandra"
 
   :url "https://github.com/troy-west/arche"
@@ -9,4 +9,3 @@
   :plugins [[lein-modules "0.3.11"]]
 
   :dependencies [[cc.qbits/alia "_"]])
-
