@@ -1,4 +1,4 @@
-(defproject com.troy-west/arche-hugcql "0.4.0-SNAPSHOT"
+(defproject com.troy-west/arche-hugcql "0.4.0"
   :description "Arche: HugCQL module"
 
   :url "https://github.com/troy-west/arche"
