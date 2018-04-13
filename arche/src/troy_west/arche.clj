@@ -50,16 +50,18 @@
          statements (if (map? statements) statements (apply merge statements))
          udts       (if (map? udts) udts (apply merge udts))]
      {:session      session
+      :keyspace     keyspace
       :statements   (prepare-statements session statements)
       :udt-encoders (prepare-encoders session udts)
       :fetch-size   (-> cluster .getConfiguration .getQueryOptions .getFetchSize)})))
 
 (defn derive
   [connection {:keys [statements udts]}]
-  (let [{:keys [session fetch-size]} connection
+  (let [{:keys [session keyspace fetch-size]} connection
         statements (if (map? statements) statements (apply merge statements))
         udts       (if (map? udts) udts (apply merge udts))]
     {:session      session
+     :keyspace     keyspace
      :statements   (prepare-statements session statements)
      :udt-encoders (prepare-encoders session udts)
      :fetch-size   fetch-size}))
