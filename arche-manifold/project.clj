@@ -1,4 +1,4 @@
-(defproject com.troy-west/arche-manifold "0.4.1"
+(defproject com.troy-west/arche-manifold "0.4.2-SNAPSHOT"
   :description "Arche: Alia / manifold module"
 
   :url "https://github.com/troy-west/arche"
