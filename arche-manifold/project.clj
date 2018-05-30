@@ -1,5 +1,5 @@
 (defproject com.troy-west/arche-manifold "0.4.3-SNAPSHOT"
-  :description "Arche: Alia / manifold module"
+  :description "Arche: manifold statement execution"
 
   :url "https://github.com/troy-west/arche"
   

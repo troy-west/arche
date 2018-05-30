@@ -2,6 +2,7 @@
   (:require [clojure.test :refer :all]
             [clojure.edn :as edn]
             [clojure.java.io :as io]
+            [clojure.core.async :as async]
             [troy-west.arche :as arche]
             [troy-west.arche.spec :as arche.spec]
             [troy-west.arche.hugcql :as arche.hugcql]
@@ -10,8 +11,7 @@
             [qbits.alia :as alia]
             [ccm-clj.core :as ccm]
             [integrant.core :as ig]
-            [com.stuartsierra.component :as cp]
-            [clojure.core.async :as async]))
+            [com.stuartsierra.component :as cp]))
 
 (defonce system (atom {}))
 
@@ -23,7 +23,7 @@
 (defn start-system!
   []
   (ccm/auto-cluster! "arche"
-                     "2.2.6"
+                     "3.0.16"
                      3
                      [#"test-resources/cql/test-keyspace\.cql"]
                      {"sandbox" [#"test-resources/cql/test-tables\.cql"]}

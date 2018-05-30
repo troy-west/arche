@@ -1,5 +1,5 @@
 (defproject com.troy-west/arche-async "0.4.3-SNAPSHOT"
-  :description "Arche: Alia / core.async module"
+  :description "Arche: core.async statement execution"
 
   :url "https://github.com/troy-west/arche"
 

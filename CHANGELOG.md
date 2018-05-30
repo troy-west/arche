@@ -3,6 +3,17 @@ All notable changes to this project will be documented in this file. This change
 
 ## [Unreleased]
 
+- Migrations support
+- Updated README.md
+
+## [0.4.0] - 2018-04-09
+
+- Derived connections
+- Extendeable execution type resolution
+  - Supports all Alia execution (textual, hayt, statement object)
+  - Supports prepared statement execution via keyword 
+- Support for preparing batch statements
+
 ## [0.3.0] - 2018-01-29
 
 - [BREAKING] HugCQL data reader name change: #arche.hugcql/statements -> #arche/hugcql

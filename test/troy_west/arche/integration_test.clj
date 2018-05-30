@@ -11,11 +11,9 @@
 (defn test-udt-encoding
   [mode connection]
   (testing (str mode ": test UDT encoding")
-    (let [encoded (arche/encode-udt connection
-                                    :arche/asset
-                                    {:code     "AB"
-                                     :currency "GBP"
-                                     :notional "12"})]
+    (let [encoded (arche/encode-udt connection :arche/asset {:code     "AB"
+                                                             :currency "GBP"
+                                                             :notional "12"})]
       (is (instance? UDTValue encoded)))))
 
 (defn test-write-then-read

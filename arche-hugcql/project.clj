@@ -1,5 +1,5 @@
 (defproject com.troy-west/arche-hugcql "0.4.3-SNAPSHOT"
-  :description "Arche: HugCQL module"
+  :description "Arche: prepared statement definition and externalisation via HugCQL"
 
   :url "https://github.com/troy-west/arche"
   

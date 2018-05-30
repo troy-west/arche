@@ -1,5 +1,5 @@
 (defproject com.troy-west/arche-integrant "0.4.3-SNAPSHOT"
-  :description "Arche: Integrant module"
+  :description "Arche: lifecycle and dependency injection via Integrant"
 
   :url "https://github.com/troy-west/arche"
   
