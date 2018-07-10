@@ -4,7 +4,7 @@
   :url "https://github.com/troy-west/arche"
 
   :license {:name "Eclipse Public License"
-            :url  "http://www.eclipse.org/legal/epl-v10.html"}
+            :url  "http://www.eclipse.org/legal/epl-v20.html"}
 
   :plugins [[lein-modules "0.3.11"]
             [lein-cljfmt "0.5.7" :exclusions [org.clojure/clojure]]
