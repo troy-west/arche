@@ -1,4 +1,4 @@
-(defproject com.troy-west/arche-component "0.4.4"
+(defproject com.troy-west/arche-component "0.4.5-SNAPSHOT"
   :description "Arche: lifecycle and dependency injection via Component"
 
   :url "https://github.com/troy-west/arche"
