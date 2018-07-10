@@ -1,4 +1,4 @@
-(defproject com.troy-west/arche-async "0.4.3-SNAPSHOT"
+(defproject com.troy-west/arche-async "0.4.3"
   :description "Arche: core.async statement execution"
 
   :url "https://github.com/troy-west/arche"
