@@ -4,7 +4,10 @@ All notable changes to this project will be documented in this file. This change
 ## [Unreleased]
 
 - Migrations support
-- Updated README.md
+
+## [0.4.4] - 2018-07-10
+
+- Updated license to EPL v 2.0
 
 ## [0.4.0] - 2018-04-09
 
