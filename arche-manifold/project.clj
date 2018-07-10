@@ -1,4 +1,4 @@
-(defproject com.troy-west/arche-manifold "0.4.4-SNAPSHOT"
+(defproject com.troy-west/arche-manifold "0.4.4"
   :description "Arche: manifold statement execution"
 
   :url "https://github.com/troy-west/arche"

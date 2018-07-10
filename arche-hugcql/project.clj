@@ -1,4 +1,4 @@
-(defproject com.troy-west/arche-hugcql "0.4.4-SNAPSHOT"
+(defproject com.troy-west/arche-hugcql "0.4.4"
   :description "Arche: prepared statement definition and externalisation via HugCQL"
 
   :url "https://github.com/troy-west/arche"
