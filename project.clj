@@ -7,8 +7,8 @@
             :url  "http://www.eclipse.org/legal/epl-v20.html"}
 
   :plugins [[lein-modules "0.3.11"]
-            [lein-cljfmt "0.5.7" :exclusions [org.clojure/clojure]]
-            [jonase/eastwood "0.2.5" :exclusions [org.clojure/clojure]]
+            [lein-cljfmt "0.6.0" :exclusions [org.clojure/clojure]]
+            [jonase/eastwood "0.2.9" :exclusions [org.clojure/clojure]]
             [lein-kibit "0.1.6" :exclusions [org.clojure/clojure org.clojure/tools.reader]]]
 
   :dependencies [[org.clojure/clojure "_"]
