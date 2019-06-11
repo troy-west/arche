@@ -2,7 +2,7 @@
   :description "Arche: prepared statement definition and externalisation via HugCQL"
 
   :url "https://github.com/troy-west/arche"
-  
+
   :license {:name "Eclipse Public License"
             :url  "http://www.eclipse.org/legal/epl-v20.html"}
 

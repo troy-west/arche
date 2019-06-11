@@ -47,27 +47,27 @@
                                                                    :opts :alia.execute/opts))))
 
 (spec/fdef troy-west.arche/prepare-statements
-           :args (spec/cat :session :cassandra/session
-                           :statements (spec/or :nil nil?
-                                                :statements :arche.config/statements)))
+  :args (spec/cat :session :cassandra/session
+                  :statements (spec/or :nil nil?
+                                       :statements :arche.config/statements)))
 
 (spec/fdef troy-west.arche/prepare-encoders
-           :args (spec/cat :session :cassandra/session
-                           :udts (spec/or :nil nil? :udts :arche.config/udts)))
+  :args (spec/cat :session :cassandra/session
+                  :udts (spec/or :nil nil? :udts :arche.config/udts)))
 
 (spec/fdef troy-west.arche/encode-udt
-           :args (spec/cat :connection :arche/connection
-                           :key any?
-                           :value any?))
+  :args (spec/cat :connection :arche/connection
+                  :key any?
+                  :value any?))
 
 (spec/fdef troy-west.arche/connect
-           :args (spec/cat :cluster :cassandra/cluster
-                           :opts (spec/? (spec/keys :opt-un [:cassandra/keyspace
-                                                             :arche.config/statements
-                                                             :arche.config/udts]))))
+  :args (spec/cat :cluster :cassandra/cluster
+                  :opts (spec/? (spec/keys :opt-un [:cassandra/keyspace
+                                                    :arche.config/statements
+                                                    :arche.config/udts]))))
 
 (spec/fdef troy-west.arche/disconnect
-           :args (spec/cat :connection :arche/connection))
+  :args (spec/cat :connection :arche/connection))
 
 (spec/fdef troy-west.arche/execute :args ::execute-args)
 

@@ -7,8 +7,7 @@
             :url  "http://www.eclipse.org/legal/epl-v20.html"}
 
   :plugins [[lein-modules "0.3.11"]
-            [lein-cljfmt "0.6.0" :exclusions [org.clojure/clojure]]
-            [jonase/eastwood "0.2.9" :exclusions [org.clojure/clojure]]
+            [lein-cljfmt "0.6.4" :exclusions [org.clojure/clojure]]
             [lein-kibit "0.1.6" :exclusions [org.clojure/clojure org.clojure/tools.reader]]]
 
   :dependencies [[org.clojure/clojure "_"]
@@ -30,12 +29,6 @@
 
                         :deploy-repositories [["releases" {:url "https://clojars.org/repo/" :creds :gpg}]]
 
-                        :eastwood            {:add-linters [:unused-fn-args
-                                                            :unused-locals
-                                                            :unused-namespaces
-                                                            :unused-private-vars]
-                                              :namespaces  [:source-paths]}
-
                         :aliases             {"puff" ["do"
                                                       ["clean"]
                                                       ["install"]
@@ -43,10 +36,9 @@
                                                       ["check"]
                                                       ["test"]
                                                       ["kibit"]
-                                                      ["cljfmt" "check"]
-                                                      ["eastwood"]]}}
+                                                      ["cljfmt" "check"]]}}
 
-            :versions  {org.clojure/clojure           "1.9.0"
+            :versions  {org.clojure/clojure           "1.10.1"
                         cc.qbits/alia                 "4.1.1"
                         cc.qbits/alia-async           "4.1.1"
                         cc.qbits/alia-manifold        "4.1.1"
